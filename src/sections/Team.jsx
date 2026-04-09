@@ -1,17 +1,369 @@
-import { Box, Text } from '@chakra-ui/react';
+import { useState } from 'react';
+import { Box, Text, Heading, Image, Flex } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
+import { FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { useColorModeValue } from '../components/ui/ColorModeProvider';
 
-// Placeholder — Team section to be built out
-const Team = () => {
+const MotionBox = motion(Box);
+
+// ── Team data ─────────────────────────────────────────────────────────────────
+
+const TEAM = [
+  {
+    name: 'Ambrose Akuno',
+    role: 'Founder',
+    bio: 'Visionary leader with 15+ years in community development across East Africa and the UK.',
+    linkedin: '#',
+    twitter: '#',
+    avatarSeed: 'ambrose',
+  },
+  {
+    name: 'Sarah Mwangi',
+    role: 'Director',
+    bio: 'Development expert specialising in sustainable programs and international partnerships.',
+    linkedin: '#',
+    twitter: '#',
+    avatarSeed: 'sarah',
+  },
+  {
+    name: 'David Ochieng',
+    role: 'Programs Lead',
+    bio: 'Field operations specialist who has managed 30+ community projects across 5 countries.',
+    linkedin: '#',
+    twitter: '#',
+    avatarSeed: 'david',
+  },
+  {
+    name: 'Grace Auma',
+    role: 'Outreach Coordinator',
+    bio: 'Community engagement expert connecting grassroots volunteers with foundation programs.',
+    linkedin: '#',
+    twitter: '#',
+    avatarSeed: 'grace',
+  },
+  {
+    name: 'James Kimani',
+    role: 'Finance Manager',
+    bio: 'Certified accountant ensuring 100% financial transparency and responsible fund management.',
+    linkedin: '#',
+    twitter: '#',
+    avatarSeed: 'james',
+  },
+];
+
+// ── Flip Card ─────────────────────────────────────────────────────────────────
+// Same 3D CSS technique as Mission section: perspective on container,
+// preserve-3d on rotating inner, backface-visibility hidden on each face.
+
+const TeamCard = ({ member }) => {
+  const [flipped, setFlipped] = useState(false);
+
+  // Front face colors — mode-aware
+  const frontBg     = useColorModeValue('#FFFFFF', '#1a2236');
+  const frontBorder = useColorModeValue('rgba(0,0,0,0.08)', 'rgba(255,255,255,0.08)');
+  const nameColor   = useColorModeValue('#0A1628', '#F0F4FF');
+
+  const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${member.avatarSeed}&backgroundColor=b6e3f4`;
+
   return (
     <Box
-      minH="100vh"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
+      w="200px"
+      h="260px"
+      flexShrink={0}
+      cursor="pointer"
+      style={{ perspective: '1000px' }}
+      onMouseEnter={() => setFlipped(true)}
+      onMouseLeave={() => setFlipped(false)}
+      onClick={() => setFlipped((f) => !f)}
     >
-      <Text fontSize="2xl" fontWeight="bold">
-        Team Section
-      </Text>
+      {/* Rotating inner element */}
+      <motion.div
+        animate={{ rotateY: flipped ? 180 : 0 }}
+        transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+        style={{
+          width: '100%',
+          height: '100%',
+          position: 'relative',
+          transformStyle: 'preserve-3d',
+          borderRadius: '16px',
+        }}
+      >
+
+        {/* ── FRONT face ───────────────────────────────────────── */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            borderRadius: '16px',
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+            backgroundColor: frontBg,
+            border: `1px solid ${frontBorder}`,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px 16px 14px',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Subtle background arc */}
+          <div style={{
+            position: 'absolute',
+            top: '-40px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '180px',
+            height: '180px',
+            borderRadius: '50%',
+            background: 'linear-gradient(145deg, rgba(37,99,235,0.06) 0%, rgba(245,158,11,0.04) 100%)',
+          }} />
+
+          {/* Circular avatar */}
+          <Box
+            w="90px"
+            h="90px"
+            borderRadius="full"
+            overflow="hidden"
+            mb={4}
+            border="3px solid"
+            borderColor="#F59E0B"
+            flexShrink={0}
+            position="relative"
+            zIndex={1}
+          >
+            <Image
+              src={avatarUrl}
+              alt={member.name}
+              w="100%"
+              h="100%"
+              objectFit="cover"
+            />
+          </Box>
+
+          {/* Name */}
+          <p style={{
+            margin: 0,
+            fontWeight: 700,
+            fontSize: '14px',
+            color: nameColor,
+            textAlign: 'center',
+            lineHeight: 1.3,
+            marginBottom: '4px',
+            position: 'relative',
+            zIndex: 1,
+          }}>
+            {member.name}
+          </p>
+
+          {/* Role */}
+          <p style={{
+            margin: 0,
+            fontSize: '12px',
+            color: '#F59E0B',
+            fontWeight: 600,
+            textAlign: 'center',
+            marginBottom: '8px',
+            position: 'relative',
+            zIndex: 1,
+          }}>
+            {member.role}
+          </p>
+
+          {/* Hover hint */}
+          <p style={{
+            margin: 0,
+            fontSize: '10px',
+            color: '#9CA3AF',
+            textAlign: 'center',
+            marginTop: 'auto',
+            position: 'relative',
+            zIndex: 1,
+          }}>
+            hover me
+          </p>
+        </div>
+
+        {/* ── BACK face ────────────────────────────────────────── */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            borderRadius: '16px',
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)',
+            background: 'linear-gradient(145deg, #2563EB 0%, #0A1628 100%)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px 16px',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Decorative rings */}
+          <div style={{
+            position: 'absolute', top: '-30px', right: '-30px',
+            width: '100px', height: '100px', borderRadius: '50%',
+            border: '2px solid rgba(255,255,255,0.1)',
+          }} />
+          <div style={{
+            position: 'absolute', bottom: '-20px', left: '-20px',
+            width: '80px', height: '80px', borderRadius: '50%',
+            background: 'rgba(255,255,255,0.05)',
+          }} />
+
+          {/* Role badge */}
+          <div style={{
+            background: 'rgba(245,158,11,0.2)',
+            border: '1px solid rgba(245,158,11,0.5)',
+            borderRadius: '20px',
+            padding: '3px 12px',
+            marginBottom: '12px',
+            position: 'relative',
+            zIndex: 1,
+          }}>
+            <span style={{ fontSize: '11px', fontWeight: 700, color: '#F59E0B' }}>
+              {member.role}
+            </span>
+          </div>
+
+          {/* Bio */}
+          <p style={{
+            margin: 0,
+            fontSize: '12px',
+            color: 'rgba(255,255,255,0.88)',
+            textAlign: 'center',
+            lineHeight: 1.65,
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            position: 'relative',
+            zIndex: 1,
+          }}>
+            {member.bio}
+          </p>
+
+          {/* Social icons */}
+          <div style={{
+            display: 'flex',
+            gap: '16px',
+            marginTop: '14px',
+            position: 'relative',
+            zIndex: 1,
+          }}>
+            <a
+              href={member.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', transition: 'color 0.2s' }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#F59E0B')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.7)')}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <FaLinkedin />
+            </a>
+            <a
+              href={member.twitter}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', transition: 'color 0.2s' }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#F59E0B')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.7)')}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <FaTwitter />
+            </a>
+          </div>
+        </div>
+
+      </motion.div>
+    </Box>
+  );
+};
+
+// ── Section ───────────────────────────────────────────────────────────────────
+
+const Team = () => {
+  const sectionBg = useColorModeValue('#F8FAFF', '#0d1d35');
+  const textColor = useColorModeValue('#0A1628', '#F0F4FF');
+  const subColor  = useColorModeValue('#4B5563', '#94A3B8');
+
+  return (
+    <Box
+      id="team"
+      bg={sectionBg}
+      py={{ base: 20, md: 28 }}
+      px={{ base: 6, md: 12, lg: 16 }}
+    >
+      <Box maxW="1280px" mx="auto">
+
+        {/* ── Section header ─────────────────────────────────────────── */}
+        <MotionBox
+          textAlign="center"
+          mb={{ base: 12, md: 16 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <Box mb={4} display="flex" alignItems="center" justifyContent="center" gap={3}>
+            <Box w="3px" h="16px" bg="#F59E0B" borderRadius="full" />
+            <Text
+              fontSize="11px"
+              fontWeight="700"
+              letterSpacing="0.18em"
+              color="#F59E0B"
+              textTransform="uppercase"
+            >
+              The People Behind the Mission
+            </Text>
+          </Box>
+
+          <Heading
+            as="h2"
+            fontFamily="heading"
+            fontSize={{ base: '3xl', md: '4xl' }}
+            fontWeight="700"
+            color={textColor}
+            letterSpacing="-0.02em"
+            mb={4}
+          >
+            Meet Our Team
+          </Heading>
+
+          <Text fontSize={{ base: 'md', md: 'lg' }} color={subColor} maxW="460px" mx="auto" lineHeight="1.8">
+            Passionate individuals united by a shared mission to create lasting change.
+          </Text>
+        </MotionBox>
+
+        {/* ── Team cards ─────────────────────────────────────────────── */}
+        {/*
+          Layout:
+          - Desktop (lg): 5 cards in a single row, centered
+          - Tablet (md):  3 + 2 layout via flex wrap + center justify
+          - Mobile:       2 columns, last card centered (flex wrap handles this)
+        */}
+        <Flex
+          flexWrap="wrap"
+          justifyContent="center"
+          gap={{ base: 5, md: 6 }}
+        >
+          {TEAM.map((member, i) => (
+            <MotionBox
+              key={member.name}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+            >
+              <TeamCard member={member} />
+            </MotionBox>
+          ))}
+        </Flex>
+
+      </Box>
     </Box>
   );
 };
