@@ -1,0 +1,9 @@
+/* Minimal global reset — all styling handled by Chakra UI */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
