@@ -18,7 +18,8 @@ import {
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { BsMoonFill, BsSunFill } from 'react-icons/bs';
-import { FiMenu, FiHeart } from 'react-icons/fi';
+import { FiMenu } from 'react-icons/fi';
+import { MdVolunteerActivism } from 'react-icons/md';
 import { useColorMode, useColorModeValue } from './ui/ColorModeProvider';
 
 // Wrap Box in Framer Motion so we can animate it as a nav element
@@ -37,14 +38,13 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
 
   // Colors resolved from color mode — all hooks called unconditionally at top
-  const frostedBg      = useColorModeValue('rgba(255,255,255,0.82)', 'rgba(10,22,40,0.82)');
-  const scrolledBorder = useColorModeValue('rgba(0,0,0,0.08)',       'rgba(255,255,255,0.08)');
+  const frostedBg      = useColorModeValue('rgba(255,255,255,0.85)', 'rgba(10,22,40,0.85)');
+  const scrolledBorder = useColorModeValue('1px solid rgba(0,0,0,0.08)', '1px solid rgba(255,255,255,0.08)');
   const logoColor      = useColorModeValue('#0A1628',                 '#F7F8FA');
   const drawerBg       = useColorModeValue('#FFFFFF',                 '#0A1628');
   const drawerBorder   = useColorModeValue('rgba(0,0,0,0.08)',        'rgba(255,255,255,0.08)');
   const toggleHoverBg  = useColorModeValue('rgba(0,0,0,0.06)',        'rgba(255,255,255,0.1)');
-  // Nav links: gray.700 in light mode (visible on both pale hero + frosted white),
-  // whiteAlpha.900 in dark mode (visible on dark navy hero + frosted dark)
+  // Nav links: gray.700 in light mode, whiteAlpha.900 in dark mode
   const navLinkColor = useColorModeValue('gray.700', 'whiteAlpha.900');
 
   // Transparent when at top — becomes frosted glass on scroll
@@ -79,9 +79,9 @@ const Navbar = () => {
         py={scrolled ? '12px' : '20px'}
         bg={navBg}
         style={{
-          backdropFilter: scrolled ? 'blur(14px) saturate(180%)' : 'none',
-          WebkitBackdropFilter: scrolled ? 'blur(14px) saturate(180%)' : 'none',
-          borderBottom: `1px solid ${navBorder}`,
+          backdropFilter: scrolled ? 'blur(12px)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
+          borderBottom: navBorder,
           transition: 'background 0.35s ease, padding 0.35s ease, border-color 0.35s ease',
         }}
         // Entrance: fade down once on load
@@ -93,8 +93,8 @@ const Navbar = () => {
 
           {/* ── Logo ─────────────────────────────────────────────── */}
           <HStack gap={2} cursor="pointer" onClick={() => handleNavClick('#hero')}>
-            <Box color="#F59E0B" fontSize="xl" lineHeight={1}>
-              <FiHeart />
+            <Box color="#F59E0B" fontSize="28px" lineHeight={1} display="flex" alignItems="center">
+              <MdVolunteerActivism />
             </Box>
             <HStack gap={1} align="baseline">
               <Text
@@ -126,13 +126,15 @@ const Navbar = () => {
                 key={label}
                 onClick={() => handleNavClick(href)}
                 cursor="pointer"
+                transition="all 0.2s ease"
               >
                 <Text
                   fontSize="sm"
                   fontWeight="500"
                   color={navLinkColor}
                   _hover={{ color: '#2563EB' }}
-                  style={{ transition: 'color 0.2s' }}
+                  _active={{ color: '#2563EB' }}
+                  transition="all 0.2s ease"
                 >
                   {label}
                 </Text>
@@ -157,14 +159,15 @@ const Navbar = () => {
 
             <Button
               size="sm"
+              py={2}
               px={6}
               borderRadius="full"
               fontWeight="700"
               fontSize="sm"
               bg="#2563EB"
               color="white"
-              _hover={{ bg: '#F59E0B', color: '#0A1628' }}
-              style={{ transition: 'background 0.25s, color 0.25s' }}
+              _hover={{ bg: '#F59E0B', color: 'gray.900' }}
+              style={{ transition: 'all 0.2s ease' }}
             >
               Donate Now
             </Button>
@@ -214,7 +217,9 @@ const Navbar = () => {
             >
               <Flex align="center" justify="space-between">
                 <HStack gap={2}>
-                  <Box color="#F59E0B"><FiHeart /></Box>
+                  <Box color="#F59E0B" fontSize="24px" display="flex" alignItems="center">
+                    <MdVolunteerActivism />
+                  </Box>
                   <Text fontWeight="800" letterSpacing="widest" fontSize="md">
                     AAAF
                   </Text>
@@ -239,7 +244,8 @@ const Navbar = () => {
                     fontWeight="500"
                     cursor="pointer"
                     _hover={{ color: '#2563EB' }}
-                    style={{ transition: 'color 0.2s', background: 'none', border: 'none', padding: 0 }}
+                    _active={{ color: '#2563EB' }}
+                    style={{ transition: 'all 0.2s ease', background: 'none', border: 'none', padding: 0 }}
                     onClick={() => handleNavClick(href)}
                   >
                     {label}
@@ -253,7 +259,8 @@ const Navbar = () => {
                     fontWeight="700"
                     bg="#2563EB"
                     color="white"
-                    _hover={{ bg: '#F59E0B', color: '#0A1628' }}
+                    _hover={{ bg: '#F59E0B', color: 'gray.900' }}
+                    style={{ transition: 'all 0.2s ease' }}
                   >
                     Donate Now
                   </Button>

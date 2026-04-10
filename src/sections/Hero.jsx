@@ -1,7 +1,9 @@
+import { useState, useEffect } from 'react';
 import { Box, Flex, Text, Heading, Button, HStack, Stack } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
-import { FiHeart, FiArrowRight } from 'react-icons/fi';
+import { FiArrowRight } from 'react-icons/fi';
+import { MdExpandMore } from 'react-icons/md';
 import { useColorModeValue } from '../components/ui/ColorModeProvider';
 
 // Animated Chakra primitives
@@ -33,16 +35,26 @@ const popIn = (delay = 0) => ({
 // ── Component ────────────────────────────────────────────────────────────────
 
 const Hero = () => {
+  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => setShowScrollIndicator(window.scrollY < 100);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   // All color mode values resolved at top — no conditional hook calls
-  const heroBg       = useColorModeValue(
+  const heroBg = useColorModeValue(
     'linear-gradient(145deg, #f0f4ff 0%, #e8effd 50%, #f5f8ff 100%)',
     'radial-gradient(ellipse 120% 80% at 50% 0%, #1a2e50 0%, #0A1628 65%)'
   );
-  const headingColor = useColorModeValue('#0A1628', '#F0F4FF');
-  const subTextColor = useColorModeValue('#4B5563', '#94A3B8');
-  const badgeBg      = useColorModeValue('rgba(37,99,235,0.07)', 'rgba(255,255,255,0.06)');
-  const badgeBorder  = useColorModeValue('rgba(37,99,235,0.2)',  'rgba(255,255,255,0.12)');
-  const badgeText    = useColorModeValue('#1D4ED8',              '#93C5FD');
+  const gradientMesh = useColorModeValue(
+    'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(37,99,235,0.12) 0%, transparent 60%)',
+    'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(37,99,235,0.25) 0%, transparent 60%)'
+  );
+  const headingColor  = useColorModeValue('#0A1628', '#F0F4FF');
+  const subTextColor  = useColorModeValue('gray.600', 'gray.300');
+  const badgeBg       = useColorModeValue('rgba(255,255,255,0.8)', 'rgba(10,22,40,0.8)');
 
   return (
     <Box
@@ -56,7 +68,15 @@ const Hero = () => {
       // Push content below fixed navbar
       pt={{ base: '80px', lg: '0' }}
     >
-      {/* Decorative background blobs — light mode only */}
+      {/* Gradient mesh overlay */}
+      <Box
+        position="absolute"
+        inset={0}
+        background={gradientMesh}
+        pointerEvents="none"
+      />
+
+      {/* Decorative background blobs */}
       <Box
         position="absolute"
         top="-10%"
@@ -116,10 +136,10 @@ const Hero = () => {
             <Heading
               as="h1"
               fontFamily="heading"
-              fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '5xl', xl: '6xl' }}
-              fontWeight="700"
+              fontSize={{ base: '4xl', md: '5xl', lg: '6xl' }}
+              fontWeight="800"
               color={headingColor}
-              lineHeight="1.12"
+              lineHeight="1.15"
               letterSpacing="-0.02em"
             >
               Empowering Communities,
@@ -131,10 +151,10 @@ const Hero = () => {
             <Heading
               as="h1"
               fontFamily="heading"
-              fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '5xl', xl: '6xl' }}
-              fontWeight="700"
+              fontSize={{ base: '4xl', md: '5xl', lg: '6xl' }}
+              fontWeight="800"
               color="#2563EB"
-              lineHeight="1.12"
+              lineHeight="1.15"
               letterSpacing="-0.02em"
               minH={{ base: '2.5em', md: '1.4em' }}
             >
@@ -155,9 +175,9 @@ const Hero = () => {
           {/* Subtext */}
           <MotionBox {...fadeIn(0.7)} mb={9}>
             <Text
-              fontSize={{ base: 'md', md: 'lg' }}
+              fontSize="lg"
               color={subTextColor}
-              lineHeight="1.85"
+              lineHeight="1.8"
               maxW="500px"
             >
               The Ambrose Akuno Auma Foundation is dedicated to sustainable
@@ -171,30 +191,34 @@ const Hero = () => {
             <HStack gap={4} flexWrap="wrap">
               <Button
                 size="lg"
+                py={4}
                 px={8}
                 borderRadius="full"
                 fontWeight="700"
                 bg="#2563EB"
                 color="white"
-                _hover={{ bg: '#1D4ED8', transform: 'translateY(-2px)' }}
-                style={{ transition: 'background 0.2s, transform 0.2s' }}
+                _hover={{ bg: '#1d4ed8', transform: 'translateY(-2px)' }}
+                style={{ transition: 'all 0.2s ease' }}
               >
                 Learn More
-                <Box as={FiArrowRight} ml={2} />
+                <MotionBox as="span" display="inline-flex" alignItems="center" ml={2} whileHover={{ x: 4 }}>
+                  <Box as={FiArrowRight} />
+                </MotionBox>
               </Button>
 
               <Button
                 size="lg"
+                py={4}
                 px={8}
                 borderRadius="full"
                 fontWeight="700"
                 variant="outline"
+                border="2px solid"
                 borderColor="#2563EB"
-                borderWidth="2px"
                 color="#2563EB"
                 bg="transparent"
                 _hover={{ bg: '#2563EB', color: 'white', transform: 'translateY(-2px)' }}
-                style={{ transition: 'background 0.2s, color 0.2s, transform 0.2s' }}
+                style={{ transition: 'all 0.2s ease' }}
               >
                 Volunteer
               </Button>
@@ -209,10 +233,9 @@ const Hero = () => {
               gap={3}
               bg={badgeBg}
               borderRadius="full"
-              px={5}
-              py={3}
-              border="1px solid"
-              borderColor={badgeBorder}
+              px={4}
+              py={2}
+              border="1px solid rgba(245,158,11,0.3)"
               style={{ backdropFilter: 'blur(8px)' }}
             >
               <Box
@@ -221,9 +244,9 @@ const Hero = () => {
                 display="flex"
                 alignItems="center"
               >
-                <FiHeart />
+                ♥
               </Box>
-              <Text fontSize="sm" fontWeight="600" color={badgeText}>
+              <Text fontSize="sm" fontWeight="600" color="#1D4ED8">
                 13,000+ Lives Impacted
               </Text>
             </HStack>
@@ -237,11 +260,12 @@ const Hero = () => {
           justifyContent={{ base: 'center', lg: 'flex-end' }}
           alignItems="center"
         >
-          {/* Slide in from right */}
+          {/* Slide in from right, with glow */}
           <MotionBox
             initial={{ opacity: 0, x: 72 }}
             animate={{ opacity: 1, x: 0  }}
             transition={{ duration: 0.75, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+            filter="drop-shadow(0 0 40px rgba(37,99,235,0.25))"
           >
             {/* Gentle infinite floating animation */}
             <MotionBox
@@ -446,6 +470,27 @@ const Hero = () => {
           </MotionBox>
         </Box>
       </Flex>
+
+      {/* ── Bouncing scroll indicator ──────────────────────────────── */}
+      <MotionBox
+        position="absolute"
+        bottom="32px"
+        left="50%"
+        style={{
+          transform: 'translateX(-50%)',
+          opacity: showScrollIndicator ? 1 : 0,
+          transition: 'opacity 0.4s ease',
+        }}
+        animate={{ y: [0, 8, 0] }}
+        transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
+      >
+        <Box
+          as={MdExpandMore}
+          fontSize="32px"
+          color="#2563EB"
+          display="block"
+        />
+      </MotionBox>
     </Box>
   );
 };
