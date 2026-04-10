@@ -17,12 +17,16 @@ const App = () => {
       <Toaster />
       <Navbar />
       <Box id="main-content">
-        <Hero />
-        <Mission />
+        {/* id="home" wraps Hero (Hero's internal id is "hero") */}
+        <div id="home"><Hero /></div>
+        {/* id="about" wraps Mission (Mission's internal id is "mission") */}
+        <div id="about"><Mission /></div>
+        {/* Programs, ImpactStats, Team already carry the correct id internally */}
         <Programs />
         <ImpactStats />
         <Team />
-        <HQMap />
+        {/* id="contact" wraps HQMap (HQMap has no internal id) */}
+        <div id="contact"><HQMap /></div>
       </Box>
       <Footer />
     </Box>
