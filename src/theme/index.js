@@ -33,6 +33,7 @@ const config = defineConfig({
       bg: 'app.bg',
       color: 'app.fg',
       fontFamily: 'body',
+      fontSize: '16px',
     },
   },
 });

@@ -13,14 +13,17 @@ import HQMap from './sections/HQMap';
 const App = () => {
   return (
     <Box>
+      <a className="skip-link" href="#main-content">Skip to content</a>
       <Toaster />
       <Navbar />
-      <Hero />
-      <Mission />
-      <Programs />
-      <ImpactStats />
-      <Team />
-      <HQMap />
+      <Box id="main-content">
+        <Hero />
+        <Mission />
+        <Programs />
+        <ImpactStats />
+        <Team />
+        <HQMap />
+      </Box>
       <Footer />
     </Box>
   );
