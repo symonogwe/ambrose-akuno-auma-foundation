@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Box, Text, Heading, Image, Flex } from '@chakra-ui/react';
+import { Box, Text, Heading, Avatar, Flex } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { useColorModeValue } from '../components/ui/ColorModeProvider';
 
 const MotionBox = motion(Box);
+const MotionA   = motion.a;
 
 // ── Team data ─────────────────────────────────────────────────────────────────
 
@@ -58,227 +59,235 @@ const TEAM = [
 const TeamCard = ({ member }) => {
   const [flipped, setFlipped] = useState(false);
 
-  // Front face colors — mode-aware
-  const frontBg     = useColorModeValue('#FFFFFF', '#1a2236');
-  const frontBorder = useColorModeValue('rgba(0,0,0,0.08)', 'rgba(255,255,255,0.08)');
-  const nameColor   = useColorModeValue('#0A1628', '#F0F4FF');
+  // Card background — used for both inner wrapper and front face
+  const cardBg    = useColorModeValue('white', 'gray.800');
+  const nameColor = useColorModeValue('#0A1628', '#F0F4FF');
 
   const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${member.avatarSeed}&backgroundColor=b6e3f4`;
 
   return (
+    /* Gradient border wrapper */
     <Box
+      background="linear-gradient(135deg, #2563EB, #F59E0B)"
+      borderRadius="18px"
+      p="2px"
       w="200px"
       h="260px"
       flexShrink={0}
-      cursor="pointer"
-      style={{ perspective: '1000px' }}
-      onMouseEnter={() => setFlipped(true)}
-      onMouseLeave={() => setFlipped(false)}
-      onClick={() => setFlipped((f) => !f)}
     >
-      {/* Rotating inner element */}
-      <motion.div
-        animate={{ rotateY: flipped ? 180 : 0 }}
-        transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-        style={{
-          width: '100%',
-          height: '100%',
-          position: 'relative',
-          transformStyle: 'preserve-3d',
-          borderRadius: '16px',
-        }}
+      {/* Inner card — provides background + perspective for 3D flip */}
+      <Box
+        bg={cardBg}
+        borderRadius="16px"
+        overflow="hidden"
+        h="100%"
+        cursor="pointer"
+        style={{ perspective: '1000px' }}
+        onMouseEnter={() => setFlipped(true)}
+        onMouseLeave={() => setFlipped(false)}
+        onClick={() => setFlipped((f) => !f)}
       >
-
-        {/* ── FRONT face ───────────────────────────────────────── */}
-        <div
+        {/* Rotating inner element */}
+        <motion.div
+          animate={{ rotateY: flipped ? 180 : 0 }}
+          transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
           style={{
-            position: 'absolute',
-            inset: 0,
-            borderRadius: '16px',
-            backfaceVisibility: 'hidden',
-            WebkitBackfaceVisibility: 'hidden',
-            backgroundColor: frontBg,
-            border: `1px solid ${frontBorder}`,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '20px 16px 14px',
-            overflow: 'hidden',
+            width: '100%',
+            height: '100%',
+            position: 'relative',
+            transformStyle: 'preserve-3d',
           }}
         >
-          {/* Subtle background arc */}
-          <div style={{
-            position: 'absolute',
-            top: '-40px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '180px',
-            height: '180px',
-            borderRadius: '50%',
-            background: 'linear-gradient(145deg, rgba(37,99,235,0.06) 0%, rgba(245,158,11,0.04) 100%)',
-          }} />
 
-          {/* Circular avatar */}
-          <Box
-            w="90px"
-            h="90px"
-            borderRadius="full"
-            overflow="hidden"
-            mb={4}
-            border="3px solid"
-            borderColor="#F59E0B"
-            flexShrink={0}
-            position="relative"
-            zIndex={1}
+          {/* ── FRONT face ───────────────────────────────────────── */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: '16px',
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden',
+              backgroundColor: 'transparent',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '20px 16px 14px',
+              overflow: 'hidden',
+            }}
           >
-            <Image
-              src={avatarUrl}
-              alt={member.name}
-              w="100%"
-              h="100%"
-              objectFit="cover"
-            />
-          </Box>
+            {/* Subtle background arc */}
+            <div style={{
+              position: 'absolute',
+              top: '-40px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '180px',
+              height: '180px',
+              borderRadius: '50%',
+              background: 'linear-gradient(145deg, rgba(37,99,235,0.06) 0%, rgba(245,158,11,0.04) 100%)',
+            }} />
 
-          {/* Name */}
-          <p style={{
-            margin: 0,
-            fontWeight: 700,
-            fontSize: '14px',
-            color: nameColor,
-            textAlign: 'center',
-            lineHeight: 1.3,
-            marginBottom: '4px',
-            position: 'relative',
-            zIndex: 1,
-          }}>
-            {member.name}
-          </p>
+            {/* Avatar with DiceBear src + Chakra name fallback */}
+            <Box
+              w="90px"
+              h="90px"
+              borderRadius="full"
+              overflow="hidden"
+              mb={4}
+              border="3px solid #F59E0B"
+              flexShrink={0}
+              position="relative"
+              zIndex={1}
+            >
+              <Avatar
+                src={avatarUrl}
+                name={member.name}
+                size="xl"
+                w="100%"
+                h="100%"
+              />
+            </Box>
 
-          {/* Role */}
-          <p style={{
-            margin: 0,
-            fontSize: '12px',
-            color: '#F59E0B',
-            fontWeight: 600,
-            textAlign: 'center',
-            marginBottom: '8px',
-            position: 'relative',
-            zIndex: 1,
-          }}>
-            {member.role}
-          </p>
+            {/* Name */}
+            <p style={{
+              margin: 0,
+              fontWeight: 700,
+              fontSize: '14px',
+              color: nameColor,
+              textAlign: 'center',
+              lineHeight: 1.3,
+              marginBottom: '4px',
+              position: 'relative',
+              zIndex: 1,
+            }}>
+              {member.name}
+            </p>
 
-          {/* Hover hint */}
-          <p style={{
-            margin: 0,
-            fontSize: '10px',
-            color: '#9CA3AF',
-            textAlign: 'center',
-            marginTop: 'auto',
-            position: 'relative',
-            zIndex: 1,
-          }}>
-            hover me
-          </p>
-        </div>
-
-        {/* ── BACK face ────────────────────────────────────────── */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            borderRadius: '16px',
-            backfaceVisibility: 'hidden',
-            WebkitBackfaceVisibility: 'hidden',
-            transform: 'rotateY(180deg)',
-            background: 'linear-gradient(145deg, #2563EB 0%, #0A1628 100%)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '20px 16px',
-            overflow: 'hidden',
-          }}
-        >
-          {/* Decorative rings */}
-          <div style={{
-            position: 'absolute', top: '-30px', right: '-30px',
-            width: '100px', height: '100px', borderRadius: '50%',
-            border: '2px solid rgba(255,255,255,0.1)',
-          }} />
-          <div style={{
-            position: 'absolute', bottom: '-20px', left: '-20px',
-            width: '80px', height: '80px', borderRadius: '50%',
-            background: 'rgba(255,255,255,0.05)',
-          }} />
-
-          {/* Role badge */}
-          <div style={{
-            background: 'rgba(245,158,11,0.2)',
-            border: '1px solid rgba(245,158,11,0.5)',
-            borderRadius: '20px',
-            padding: '3px 12px',
-            marginBottom: '12px',
-            position: 'relative',
-            zIndex: 1,
-          }}>
-            <span style={{ fontSize: '11px', fontWeight: 700, color: '#F59E0B' }}>
+            {/* Role */}
+            <p style={{
+              margin: 0,
+              fontSize: '12px',
+              color: '#F59E0B',
+              fontWeight: 600,
+              textAlign: 'center',
+              marginBottom: '8px',
+              position: 'relative',
+              zIndex: 1,
+            }}>
               {member.role}
-            </span>
+            </p>
+
+            {/* Flip hint */}
+            <p style={{
+              margin: 0,
+              fontSize: '11px',
+              color: '#F59E0B',
+              fontStyle: 'italic',
+              textAlign: 'center',
+              marginTop: 'auto',
+              position: 'relative',
+              zIndex: 1,
+            }}>
+              ↑ meet me
+            </p>
           </div>
 
-          {/* Bio */}
-          <p style={{
-            margin: 0,
-            fontSize: '12px',
-            color: 'rgba(255,255,255,0.88)',
-            textAlign: 'center',
-            lineHeight: 1.65,
-            flex: 1,
-            display: 'flex',
-            alignItems: 'center',
-            position: 'relative',
-            zIndex: 1,
-          }}>
-            {member.bio}
-          </p>
+          {/* ── BACK face ────────────────────────────────────────── */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: '16px',
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden',
+              transform: 'rotateY(180deg)',
+              background: 'linear-gradient(145deg, #2563EB 0%, #0A1628 100%)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '20px 16px',
+              overflow: 'hidden',
+            }}
+          >
+            {/* Decorative rings */}
+            <div style={{
+              position: 'absolute', top: '-30px', right: '-30px',
+              width: '100px', height: '100px', borderRadius: '50%',
+              border: '2px solid rgba(255,255,255,0.1)',
+            }} />
+            <div style={{
+              position: 'absolute', bottom: '-20px', left: '-20px',
+              width: '80px', height: '80px', borderRadius: '50%',
+              background: 'rgba(255,255,255,0.05)',
+            }} />
 
-          {/* Social icons */}
-          <div style={{
-            display: 'flex',
-            gap: '16px',
-            marginTop: '14px',
-            position: 'relative',
-            zIndex: 1,
-          }}>
-            <a
-              href={member.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', transition: 'color 0.2s' }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#F59E0B')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.7)')}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <FaLinkedin />
-            </a>
-            <a
-              href={member.twitter}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', transition: 'color 0.2s' }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#F59E0B')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.7)')}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <FaTwitter />
-            </a>
+            {/* Role pill badge */}
+            <div style={{
+              background: 'rgba(245,158,11,0.2)',
+              borderRadius: '9999px',
+              padding: '4px 12px',
+              marginBottom: '12px',
+              position: 'relative',
+              zIndex: 1,
+            }}>
+              <span style={{ fontSize: '12px', fontWeight: 600, color: '#F59E0B' }}>
+                {member.role}
+              </span>
+            </div>
+
+            {/* Bio */}
+            <p style={{
+              margin: 0,
+              fontSize: '12px',
+              color: 'rgba(255,255,255,0.88)',
+              textAlign: 'center',
+              lineHeight: 1.65,
+              flex: 1,
+              display: 'flex',
+              alignItems: 'center',
+              position: 'relative',
+              zIndex: 1,
+            }}>
+              {member.bio}
+            </p>
+
+            {/* Social icon links — Framer Motion scale + color on hover */}
+            <div style={{
+              display: 'flex',
+              gap: '16px',
+              marginTop: '14px',
+              position: 'relative',
+              zIndex: 1,
+            }}>
+              <MotionA
+                href={member.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: 'white', fontSize: '20px', display: 'inline-flex' }}
+                whileHover={{ scale: 1.2, color: '#F59E0B' }}
+                transition={{ duration: 0.2 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <FaLinkedin />
+              </MotionA>
+              <MotionA
+                href={member.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: 'white', fontSize: '20px', display: 'inline-flex' }}
+                whileHover={{ scale: 1.2, color: '#F59E0B' }}
+                transition={{ duration: 0.2 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <FaTwitter />
+              </MotionA>
+            </div>
           </div>
-        </div>
 
-      </motion.div>
+        </motion.div>
+      </Box>
     </Box>
   );
 };
@@ -289,11 +298,17 @@ const Team = () => {
   const sectionBg = useColorModeValue('#F8FAFF', '#0d1d35');
   const textColor = useColorModeValue('#0A1628', '#F0F4FF');
   const subColor  = useColorModeValue('#4B5563', '#94A3B8');
+  const dotGrid   = useColorModeValue(
+    'radial-gradient(circle, #e2e8f0 1px, transparent 1px)',
+    'radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)'
+  );
 
   return (
     <Box
       id="team"
       bg={sectionBg}
+      backgroundImage={dotGrid}
+      backgroundSize="24px 24px"
       py={{ base: 20, md: 28 }}
       px={{ base: 6, md: 12, lg: 16 }}
     >

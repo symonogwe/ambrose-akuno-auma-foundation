@@ -16,12 +16,22 @@ const STATS = [
   { target: 100, suffix: '%',  label: 'Transparency',        icon: MdVerified   },
 ];
 
+// ── Floating dot definitions (fixed positions + durations, no randomness) ─────
+const DOTS = [
+  { top: '10%', left: '5%',  size: '8px',  duration: 3.5 },
+  { top: '25%', left: '88%', size: '6px',  duration: 4.2 },
+  { top: '55%', left: '15%', size: '10px', duration: 5.0 },
+  { top: '70%', left: '75%', size: '7px',  duration: 3.8 },
+  { top: '85%', left: '45%', size: '9px',  duration: 6.0 },
+  { top: '40%', left: '60%', size: '6px',  duration: 4.7 },
+];
+
 // ── Stat Card ─────────────────────────────────────────────────────────────────
 
 const StatCard = ({ stat, index, isLast }) => {
   const Icon = stat.icon;
   // Label is white-ish on blue (light) and muted on navy (dark)
-  const labelColor  = useColorModeValue('rgba(255,255,255,0.85)', 'gray.400');
+  const labelColor   = useColorModeValue('rgba(255,255,255,0.85)', 'gray.400');
   // Dividers are more visible on the brighter blue background
   const dividerColor = useColorModeValue('rgba(255,255,255,0.3)', 'rgba(255,255,255,0.1)');
 
@@ -35,6 +45,7 @@ const StatCard = ({ stat, index, isLast }) => {
       textAlign="center"
       px={{ base: 4, md: 6 }}
       py={{ base: 8, md: 10 }}
+      borderTop="2px solid rgba(245,158,11,0.35)"
       // Vertical divider on desktop, horizontal on mobile — skip on last card
       borderRight={!isLast ? { base: 'none', md: `1px solid ${dividerColor}` } : 'none'}
       borderBottom={{ base: !isLast ? `1px solid ${dividerColor}` : 'none', md: 'none' }}
@@ -54,7 +65,7 @@ const StatCard = ({ stat, index, isLast }) => {
         fontWeight="800"
         color="white"
         lineHeight={1}
-        letterSpacing="-0.03em"
+        letterSpacing="-0.02em"
         mb={3}
       >
         <AnimatedCounter target={stat.target} suffix={stat.suffix} duration={2.5} />
@@ -86,8 +97,27 @@ const ImpactStats = () => {
       background={heroBg}
       py={{ base: 16, md: 20 }}
       px={{ base: 6, md: 12, lg: 16 }}
+      position="relative"
+      overflow="hidden"
     >
-      <Box maxW="1280px" mx="auto">
+      {/* ── Floating gold dots ─────────────────────────────────────── */}
+      {DOTS.map((dot, i) => (
+        <MotionBox
+          key={i}
+          position="absolute"
+          top={dot.top}
+          left={dot.left}
+          w={dot.size}
+          h={dot.size}
+          borderRadius="full"
+          bg="rgba(245,158,11,0.15)"
+          pointerEvents="none"
+          animate={{ y: [-10, 10, -10] }}
+          transition={{ repeat: Infinity, duration: dot.duration, ease: 'easeInOut' }}
+        />
+      ))}
+
+      <Box maxW="1280px" mx="auto" position="relative" zIndex={1}>
 
         {/* ── Section label — gold on both backgrounds ───────────────── */}
         <MotionBox
@@ -110,6 +140,8 @@ const ImpactStats = () => {
               Our Impact
             </Text>
           </Box>
+          {/* Gold divider line */}
+          <Box w="48px" h="3px" bg="#F59E0B" borderRadius="full" mx="auto" mt={2} mb={8} />
         </MotionBox>
 
         {/* ── Stat cards row ─────────────────────────────────────────── */}
