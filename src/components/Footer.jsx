@@ -11,6 +11,8 @@ import {
   Input,
   Button,
   Separator,
+  Tooltip,
+  IconButton,
 } from '@chakra-ui/react';
 import {
   FaFacebook,
@@ -18,7 +20,7 @@ import {
   FaInstagram,
   FaLinkedin,
 } from 'react-icons/fa';
-import { MdFavorite, MdChevronRight } from 'react-icons/md';
+import { MdFavorite, MdChevronRight, MdKeyboardArrowUp } from 'react-icons/md';
 import { toaster } from './ui/toaster';
 
 const quickLinks = ['Home', 'About Us', 'Our Programs', 'Impact Reports', 'Volunteer'];
@@ -82,23 +84,29 @@ const Footer = () => {
               2010.
             </Text>
 
-            {/* Social icons */}
+            {/* Social icons — Tooltip (v3 compound API) + Framer Motion hover */}
             <Flex mt={6} wrap="wrap">
               {socialIcons.map(({ Icon, label }) => (
-                <Motion.a
-                  key={label}
-                  href="#"
-                  aria-label={label}
-                  whileHover={{ y: -2 }}
-                  style={{ marginRight: '16px', display: 'inline-flex' }}
-                >
-                  <Box
-                    as={Icon}
-                    fontSize="20px"
-                    color="gray.400"
-                    _hover={{ color: '#F59E0B' }}
-                  />
-                </Motion.a>
+                <Tooltip.Root key={label} openDelay={200} closeDelay={100}>
+                  <Tooltip.Trigger asChild>
+                    <Motion.a
+                      href="#"
+                      aria-label={label}
+                      whileHover={{ y: -3, scale: 1.1 }}
+                      style={{ marginRight: '16px', display: 'inline-flex' }}
+                    >
+                      <Box
+                        as={Icon}
+                        fontSize="22px"
+                        color="gray.400"
+                        _hover={{ color: '#F59E0B' }}
+                      />
+                    </Motion.a>
+                  </Tooltip.Trigger>
+                  <Tooltip.Positioner>
+                    <Tooltip.Content>{label}</Tooltip.Content>
+                  </Tooltip.Positioner>
+                </Tooltip.Root>
               ))}
             </Flex>
           </Motion.div>
@@ -109,7 +117,12 @@ const Footer = () => {
               Quick Links
             </Heading>
             {quickLinks.map((item) => (
-              <Motion.div key={item} whileHover={{ x: 4 }} style={{ display: 'block' }}>
+              <Motion.div
+                key={item}
+                whileHover={{ x: 4 }}
+                transition={{ duration: 0.15 }}
+                style={{ display: 'block' }}
+              >
                 <Link
                   href="#"
                   color="gray.400"
@@ -117,6 +130,7 @@ const Footer = () => {
                   display="flex"
                   alignItems="center"
                   mb={2}
+                  cursor="pointer"
                   _hover={{ color: 'white', textDecoration: 'none' }}
                 >
                   <Box as={MdChevronRight} fontSize="16px" mr={1} />
@@ -132,7 +146,12 @@ const Footer = () => {
               Programs
             </Heading>
             {programs.map((item) => (
-              <Motion.div key={item} whileHover={{ x: 4 }} style={{ display: 'block' }}>
+              <Motion.div
+                key={item}
+                whileHover={{ x: 4 }}
+                transition={{ duration: 0.15 }}
+                style={{ display: 'block' }}
+              >
                 <Link
                   href="#"
                   color="gray.400"
@@ -140,6 +159,7 @@ const Footer = () => {
                   display="flex"
                   alignItems="center"
                   mb={2}
+                  cursor="pointer"
                   _hover={{ color: 'white', textDecoration: 'none' }}
                 >
                   <Box as={MdChevronRight} fontSize="16px" mr={1} />
@@ -209,25 +229,38 @@ const Footer = () => {
           <Text color="gray.500" fontSize="xs">
             &copy; 2025 Ambrose Akuno Auma Foundation. All rights reserved.
           </Text>
-          <Flex>
-            <Link
-              href="#"
-              color="gray.500"
-              fontSize="xs"
-              mx={2}
+          <Flex align="center" gap={2}>
+            <Flex>
+              <Link
+                href="#"
+                color="gray.500"
+                fontSize="xs"
+                mx={2}
+                _hover={{ color: 'white' }}
+              >
+                Privacy Policy
+              </Link>
+              <Link
+                href="#"
+                color="gray.500"
+                fontSize="xs"
+                mx={2}
+                _hover={{ color: 'white' }}
+              >
+                Terms of Service
+              </Link>
+            </Flex>
+
+            {/* Back to Top button */}
+            <IconButton
+              aria-label="Back to top"
+              variant="ghost"
+              color="gray.400"
               _hover={{ color: 'white' }}
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
-              Privacy Policy
-            </Link>
-            <Link
-              href="#"
-              color="gray.500"
-              fontSize="xs"
-              mx={2}
-              _hover={{ color: 'white' }}
-            >
-              Terms of Service
-            </Link>
+              <Box as={MdKeyboardArrowUp} fontSize="20px" />
+            </IconButton>
           </Flex>
         </Flex>
       </Container>

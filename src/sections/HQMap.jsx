@@ -13,7 +13,13 @@ import {
   FieldRoot,
   FieldLabel,
 } from "@chakra-ui/react";
-import { MdLocationOn, MdEmail, MdSend } from "react-icons/md";
+import {
+  MdLocationOn,
+  MdEmail,
+  MdSend,
+  MdAccessTime,
+  MdPhone,
+} from "react-icons/md";
 import {
   useColorModeValue,
   useColorMode,
@@ -90,25 +96,32 @@ const HQMap = () => {
             transition={{ duration: 0.7, ease: "easeOut" }}
             viewport={{ once: true }}
           >
+            {/* Map iframe with gold border wrapper */}
             <Box
-              as="iframe"
-              src={MAP_EMBED_URL}
-              width="100%"
-              height="480px"
+              border="2px solid rgba(245,158,11,0.4)"
               borderRadius="16px"
-              border="none"
-              loading="lazy"
-              allowFullScreen={true}
-              referrerPolicy="no-referrer-when-downgrade"
-              style={{
-                filter:
-                  colorMode === "dark"
-                    ? "invert(90%) hue-rotate(180deg)"
-                    : "none",
-                transition: "filter 0.3s ease",
-                display: "block",
-              }}
-            />
+              overflow="hidden"
+              boxShadow="0 10px 15px rgba(0,0,0,0.1)"
+            >
+              <Box
+                as="iframe"
+                src={MAP_EMBED_URL}
+                width="100%"
+                height="480px"
+                border="none"
+                loading="lazy"
+                allowFullScreen={true}
+                referrerPolicy="no-referrer-when-downgrade"
+                style={{
+                  filter:
+                    colorMode === "dark"
+                      ? "invert(90%) hue-rotate(180deg)"
+                      : "none",
+                  transition: "filter 0.3s ease",
+                  display: "block",
+                }}
+              />
+            </Box>
 
             {/* Address row */}
             <Flex
@@ -143,6 +156,29 @@ const HQMap = () => {
               />
               <Text>info@ambroseakunoaumafoundation.org</Text>
             </Flex>
+
+            {/* Hours + Phone info row */}
+            <Flex gap={4} mt={4} flexWrap="wrap">
+              <Flex align="center" gap={2} color={subTextColor} fontSize="sm">
+                <Box
+                  as={MdAccessTime}
+                  color="#F59E0B"
+                  fontSize="18px"
+                  flexShrink={0}
+                />
+                <Text>Mon–Fri: 9am–5pm GMT</Text>
+              </Flex>
+              <Flex align="center" gap={2} color={subTextColor} fontSize="sm">
+                <Box
+                  as={MdPhone}
+                  color="#F59E0B"
+                  fontSize="18px"
+                  flexShrink={0}
+                />
+                {/* TODO: Replace with real phone number */}
+                <Text>+44 (0) 000 000 0000</Text>
+              </Flex>
+            </Flex>
           </Motion.div>
 
           {/* RIGHT — Contact Form */}
@@ -162,6 +198,9 @@ const HQMap = () => {
             >
               Get In Touch
             </Text>
+
+            {/* Gold vertical accent line (same as Mission section) */}
+            <Box w="4px" h="48px" bg="#F59E0B" borderRadius="full" mb={3} />
 
             <Heading
               as="h3"
@@ -193,7 +232,7 @@ const HQMap = () => {
                     borderRadius="8px"
                     _focus={{
                       borderColor: "#2563EB",
-                      boxShadow: "0 0 0 1px #2563EB",
+                      boxShadow: "0 0 0 3px rgba(37,99,235,0.15)",
                     }}
                   />
                 </FieldRoot>
@@ -212,7 +251,7 @@ const HQMap = () => {
                     borderRadius="8px"
                     _focus={{
                       borderColor: "#2563EB",
-                      boxShadow: "0 0 0 1px #2563EB",
+                      boxShadow: "0 0 0 3px rgba(37,99,235,0.15)",
                     }}
                   />
                 </FieldRoot>
@@ -231,7 +270,7 @@ const HQMap = () => {
                   borderRadius="8px"
                   _focus={{
                     borderColor: "#2563EB",
-                    boxShadow: "0 0 0 1px #2563EB",
+                    boxShadow: "0 0 0 3px rgba(37,99,235,0.15)",
                   }}
                 />
               </FieldRoot>
@@ -251,25 +290,31 @@ const HQMap = () => {
                   borderRadius="8px"
                   _focus={{
                     borderColor: "#2563EB",
-                    boxShadow: "0 0 0 1px #2563EB",
+                    boxShadow: "0 0 0 3px rgba(37,99,235,0.15)",
                   }}
                 />
               </FieldRoot>
 
-              <Button
-                type="submit"
-                width="100%"
-                bg="#2563EB"
-                color="white"
-                borderRadius="8px"
-                py={6}
-                _hover={{ bg: "#F59E0B", color: "gray.900" }}
+              {/* Send button with Framer Motion scale hover */}
+              <Motion.div
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
               >
-                <Flex align="center" gap={2}>
-                  Send Message
-                  <Box as={MdSend} fontSize="16px" />
-                </Flex>
-              </Button>
+                <Button
+                  type="submit"
+                  width="100%"
+                  bg="#2563EB"
+                  color="white"
+                  borderRadius="8px"
+                  py={6}
+                  _hover={{ bg: "#F59E0B", color: "gray.900" }}
+                >
+                  <Flex align="center" gap={2}>
+                    Send Message
+                    <Box as={MdSend} fontSize="16px" />
+                  </Flex>
+                </Button>
+              </Motion.div>
             </Box>
           </Motion.div>
         </SimpleGrid>
