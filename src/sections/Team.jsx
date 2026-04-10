@@ -16,7 +16,6 @@ const TEAM = [
     bio: 'Visionary leader with 15+ years in community development across East Africa and the UK.',
     linkedin: '#',
     twitter: '#',
-    avatarSeed: 'ambrose',
   },
   {
     name: 'Sarah Mwangi',
@@ -24,7 +23,6 @@ const TEAM = [
     bio: 'Development expert specialising in sustainable programs and international partnerships.',
     linkedin: '#',
     twitter: '#',
-    avatarSeed: 'sarah',
   },
   {
     name: 'David Ochieng',
@@ -32,7 +30,6 @@ const TEAM = [
     bio: 'Field operations specialist who has managed 30+ community projects across 5 countries.',
     linkedin: '#',
     twitter: '#',
-    avatarSeed: 'david',
   },
   {
     name: 'Grace Auma',
@@ -40,7 +37,6 @@ const TEAM = [
     bio: 'Community engagement expert connecting grassroots volunteers with foundation programs.',
     linkedin: '#',
     twitter: '#',
-    avatarSeed: 'grace',
   },
   {
     name: 'James Kimani',
@@ -48,7 +44,6 @@ const TEAM = [
     bio: 'Certified accountant ensuring 100% financial transparency and responsible fund management.',
     linkedin: '#',
     twitter: '#',
-    avatarSeed: 'james',
   },
 ];
 
@@ -62,8 +57,6 @@ const TeamCard = ({ member }) => {
   // Card background — used for both inner wrapper and front face
   const cardBg    = useColorModeValue('white', 'gray.800');
   const nameColor = useColorModeValue('#0A1628', '#F0F4FF');
-
-  const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${member.avatarSeed}&backgroundColor=b6e3f4`;
 
   return (
     /* Gradient border wrapper */
@@ -127,24 +120,41 @@ const TeamCard = ({ member }) => {
               background: 'linear-gradient(145deg, rgba(37,99,235,0.06) 0%, rgba(245,158,11,0.04) 100%)',
             }} />
 
-            {/* Avatar with DiceBear src + Chakra name fallback */}
-            {/* Avatar is a v3 namespace — must use Avatar.Root / Avatar.Image / Avatar.Fallback */}
-            <Box
-              w="90px"
-              h="90px"
-              borderRadius="full"
-              overflow="hidden"
-              mb={4}
-              border="3px solid #F59E0B"
-              flexShrink={0}
-              position="relative"
-              zIndex={1}
+            {/* Initials avatar — centered initials, no gold ring */}
+            <Avatar.Root
+              style={{
+                width: '90px',
+                height: '90px',
+                borderRadius: '50%',
+                overflow: 'hidden',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '16px',
+                flexShrink: 0,
+                position: 'relative',
+                zIndex: 1,
+              }}
             >
-              <Avatar.Root w="full" h="full" borderRadius="full">
-                <Avatar.Image src={avatarUrl} alt={member.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                <Avatar.Fallback name={member.name} w="full" h="full" fontSize="lg" />
-              </Avatar.Root>
-            </Box>
+              <Avatar.Fallback
+                name={member.name}
+                style={{
+                  background: 'linear-gradient(135deg, #2563EB, #0A1628)',
+                  color: 'white',
+                  fontSize: '24px',
+                  fontWeight: '700',
+                  width: '90px',
+                  height: '90px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  textAlign: 'center',
+                  lineHeight: '1',
+                  letterSpacing: '0.05em',
+                }}
+              />
+            </Avatar.Root>
 
             {/* Name */}
             <p style={{
