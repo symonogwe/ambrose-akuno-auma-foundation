@@ -3,6 +3,7 @@ import {
   Text,
   Heading,
   Button,
+  HStack,
   DialogRoot,
   DialogBackdrop,
   DialogPositioner,
@@ -16,6 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { FiUsers, FiDroplet, FiBook } from 'react-icons/fi';
+import { MdArrowForward } from 'react-icons/md';
 import { useColorModeValue } from '../components/ui/ColorModeProvider';
 
 const MotionBox = motion(Box);
@@ -64,17 +66,23 @@ const ProgramCard = ({ program, onOpen, isLarge }) => {
   const Icon = program.icon;
 
   return (
-    <MotionBox
+    <Box
       bg={cardBg}
-      borderRadius="2xl"
+      borderRadius="20px"
       overflow="hidden"
       h="full"
       minH={isLarge ? { base: '320px', md: '100%' } : 'auto'}
       display="flex"
       flexDirection="column"
-      whileHover={{ y: -6, boxShadow: '0 24px 64px rgba(0,0,0,0.13)' }}
-      transition={{ duration: 0.25, ease: 'easeOut' }}
-      style={{ boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}
+      cursor="pointer"
+      boxShadow="0 4px 6px rgba(0,0,0,0.07)"
+      borderTop="3px solid transparent"
+      transition="all 0.2s ease"
+      _hover={{
+        boxShadow: '0 10px 15px rgba(0,0,0,0.1)',
+        borderTop: '3px solid #F59E0B',
+      }}
+      onClick={onOpen}
     >
       {/* Gradient banner */}
       <Box
@@ -103,7 +111,7 @@ const ProgramCard = ({ program, onOpen, isLarge }) => {
         <Heading
           as="h3"
           fontFamily="heading"
-          fontSize={isLarge ? 'xl' : 'md'}
+          fontSize="xl"
           fontWeight="700"
           color={textColor}
           mb={2}
@@ -115,26 +123,26 @@ const ProgramCard = ({ program, onOpen, isLarge }) => {
           {program.shortDesc}
         </Text>
         <Box mt={5}>
-          <button
-            style={{
-              background: 'none',
-              border: 'none',
-              padding: 0,
-              cursor: 'pointer',
-              fontSize: '13px',
-              fontWeight: 700,
-              color: '#F59E0B',
-              transition: 'color 0.2s',
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = '#2563EB')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = '#F59E0B')}
-            onClick={onOpen}
+          <HStack
+            display="inline-flex"
+            align="center"
+            gap={1}
+            color="#F59E0B"
+            fontWeight="600"
+            fontSize="sm"
+            cursor="pointer"
+            _hover={{ color: '#2563EB' }}
+            transition="color 0.2s ease"
+            onClick={(e) => { e.stopPropagation(); onOpen(); }}
           >
-            Learn More →
-          </button>
+            <Text>Learn More</Text>
+            <MotionBox display="inline-flex" alignItems="center" whileHover={{ x: 4 }} transition={{ duration: 0.2 }}>
+              <Box as={MdArrowForward} fontSize="16px" />
+            </MotionBox>
+          </HStack>
         </Box>
       </Box>
-    </MotionBox>
+    </Box>
   );
 };
 
@@ -143,17 +151,15 @@ const ProgramCard = ({ program, onOpen, isLarge }) => {
 // state, no setTimeout, no motion wrappers that fight Ark UI's Dialog lifecycle.
 
 const ProgramModal = ({ program, open, onClose }) => {
-  const modalBg   = useColorModeValue('#FFFFFF', '#0A1628');
-  const textColor = useColorModeValue('#0A1628', '#F0F4FF');
-  const subColor  = useColorModeValue('#4B5563', '#94A3B8');
-  const statBg    = useColorModeValue('rgba(37,99,235,0.07)', 'rgba(255,255,255,0.06)');
-  const statColor = useColorModeValue('#1D4ED8', '#93C5FD');
+  const modalBg  = useColorModeValue('#FFFFFF', '#0A1628');
+  const subColor = useColorModeValue('#4B5563', '#94A3B8');
   const Icon = program.icon;
 
   return (
     <DialogRoot
       open={open}
       onOpenChange={(e) => { if (!e.open) onClose(); }}
+      size="lg"
     >
       <DialogBackdrop />
       <DialogPositioner>
@@ -164,48 +170,53 @@ const ProgramModal = ({ program, open, onClose }) => {
           overflow="hidden"
           position="relative"
         >
-          {/* Gradient banner */}
-          <Box
+          {/* Gradient header — icon + title */}
+          <DialogHeader
             background={program.gradient}
-            h="160px"
+            borderRadius="16px 16px 0 0"
+            p={6}
+            color="white"
             display="flex"
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
+            gap={3}
             position="relative"
             overflow="hidden"
-            flexShrink={0}
           >
+            {/* Decorative rings */}
             <Box position="absolute" top="-20px" right="-20px" w="130px" h="130px" borderRadius="full" bg="rgba(255,255,255,0.1)" />
             <Box position="absolute" bottom="-30px" left="-30px" w="150px" h="150px" borderRadius="full" bg="rgba(255,255,255,0.07)" />
-            <Box color="white" fontSize="3rem" mb={2} style={{ position: 'relative', zIndex: 1 }}>
+
+            <Box color="white" fontSize="3rem" style={{ position: 'relative', zIndex: 1 }}>
               <Icon />
             </Box>
-            <Text fontWeight="700" color="white" fontSize="lg" style={{ position: 'relative', zIndex: 1 }}>
-              {program.title}
-            </Text>
-          </Box>
-
-          {/* Modal body — no motion wrapper; Ark UI Dialog handles its own transitions */}
-          <DialogHeader px={6} pt={6} pb={2}>
             <DialogTitle asChild>
-              <Heading as="h3" fontFamily="heading" fontSize="xl" fontWeight="700" color={textColor}>
+              <Heading
+                as="h3"
+                fontFamily="heading"
+                fontSize="xl"
+                fontWeight="700"
+                color="white"
+                style={{ position: 'relative', zIndex: 1 }}
+              >
                 {program.title}
               </Heading>
             </DialogTitle>
           </DialogHeader>
 
-          <DialogBody px={6} pb={2} pt={3}>
-            <Text fontSize="md" color={subColor} lineHeight="1.85" mb={6}>
+          {/* Modal body — no motion wrapper; Ark UI Dialog handles its own transitions */}
+          <DialogBody px={6} pb={2} pt={5}>
+            <Text fontSize="md" color={subColor} lineHeight="1.85" mb={4}>
               {program.modalDescription}
             </Text>
 
             {/* Impact stat callout */}
-            <Box bg={statBg} borderRadius="xl" px={5} py={4} borderLeft="4px solid #F59E0B">
-              <Text fontSize="xs" fontWeight="600" color={subColor} textTransform="uppercase" letterSpacing="wider" mb={1}>
+            <Box bg="#F59E0B" color="gray.900" borderRadius="8px" p={3} fontWeight="700" mt={3}>
+              <Text fontSize="xs" textTransform="uppercase" letterSpacing="wider" mb={1} opacity={0.7}>
                 Impact
               </Text>
-              <Text fontSize="lg" fontWeight="700" color={statColor}>
+              <Text fontSize="lg">
                 {program.stat}
               </Text>
             </Box>
@@ -228,8 +239,8 @@ const ProgramModal = ({ program, open, onClose }) => {
             </Button>
           </DialogFooter>
 
-          {/* White close button floats over the gradient banner */}
-          <DialogCloseTrigger color="white" top="10px" right="10px" _hover={{ bg: 'rgba(255,255,255,0.2)' }} borderRadius="full" />
+          {/* White close button floats over the gradient header */}
+          <DialogCloseTrigger color="white" top={3} right={3} _hover={{ bg: 'rgba(255,255,255,0.2)' }} borderRadius="full" />
         </DialogContent>
       </DialogPositioner>
     </DialogRoot>

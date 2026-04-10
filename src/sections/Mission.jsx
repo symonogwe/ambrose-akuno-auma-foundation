@@ -29,7 +29,7 @@ const FlipCard = ({ icon, name, tagline, description }) => {
       {/* Rotating inner element */}
       <motion.div
         animate={{ rotateY: flipped ? 180 : 0 }}
-        transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+        transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
         style={{
           width: '100%',
           height: '100%',
@@ -53,6 +53,7 @@ const FlipCard = ({ icon, name, tagline, description }) => {
             justifyContent: 'center',
             padding: '24px',
             overflow: 'hidden',
+            boxShadow: '0 4px 6px rgba(0,0,0,0.07)',
           }}
         >
           {/* Subtle decorative ring */}
@@ -88,6 +89,7 @@ const FlipCard = ({ icon, name, tagline, description }) => {
             justifyContent: 'center',
             padding: '20px',
             overflow: 'hidden',
+            boxShadow: '0 10px 15px rgba(0,0,0,0.1)',
           }}
         >
           {/* Decorative elements */}
@@ -143,14 +145,20 @@ const CARDS = [
 // ── Section ───────────────────────────────────────────────────────────────────
 
 const Mission = () => {
-  const sectionBg   = useColorModeValue('#F8FAFF', '#0d1d35');
-  const textColor   = useColorModeValue('#0A1628', '#F0F4FF');
-  const subColor    = useColorModeValue('#4B5563', '#94A3B8');
+  const sectionBg  = useColorModeValue('#F8FAFF', '#0d1d35');
+  const textColor  = useColorModeValue('#0A1628', '#F0F4FF');
+  const subColor   = useColorModeValue('#4B5563', '#94A3B8');
+  const dotGrid    = useColorModeValue(
+    'radial-gradient(circle, #e2e8f0 1px, transparent 1px)',
+    'radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)'
+  );
 
   return (
     <Box
       id="mission"
       bg={sectionBg}
+      backgroundImage={dotGrid}
+      backgroundSize="24px 24px"
       py={{ base: 20, md: 28 }}
       px={{ base: 6, md: 12, lg: 16 }}
     >
@@ -170,6 +178,9 @@ const Mission = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.65, ease: 'easeOut' }}
         >
+          {/* Vertical gold accent line */}
+          <Box w="4px" h="48px" bg="#F59E0B" borderRadius="full" mb={3} />
+
           {/* Label */}
           <Box mb={5} display="flex" alignItems="center" gap={3}>
             <Box w="3px" h="16px" bg="#F59E0B" borderRadius="full" flexShrink={0} />
