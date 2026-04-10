@@ -5,6 +5,7 @@ import { TypeAnimation } from 'react-type-animation';
 import { FiArrowRight } from 'react-icons/fi';
 import { MdExpandMore } from 'react-icons/md';
 import { useColorModeValue } from '../components/ui/ColorModeProvider';
+import { scrollToSection } from '../utils/smoothScroll';
 
 // Animated Chakra primitives
 const MotionBox = motion(Box);
@@ -199,6 +200,7 @@ const Hero = () => {
                 color="white"
                 _hover={{ bg: '#1d4ed8', transform: 'translateY(-2px)' }}
                 style={{ transition: 'all 0.2s ease' }}
+                onClick={() => scrollToSection('about')}
               >
                 Learn More
                 <MotionBox as="span" display="inline-flex" alignItems="center" ml={2} whileHover={{ x: 4 }}>
@@ -206,6 +208,7 @@ const Hero = () => {
                 </MotionBox>
               </Button>
 
+              {/* TODO: Can link to dedicated volunteer form page in future */}
               <Button
                 size="lg"
                 py={4}
@@ -219,14 +222,21 @@ const Hero = () => {
                 bg="transparent"
                 _hover={{ bg: '#2563EB', color: 'white', transform: 'translateY(-2px)' }}
                 style={{ transition: 'all 0.2s ease' }}
+                onClick={() => scrollToSection('contact')}
               >
                 Volunteer
               </Button>
             </HStack>
           </MotionBox>
 
-          {/* Stat badge */}
-          <MotionBox {...popIn(1.1)} display="inline-block">
+          {/* Stat badge — clicking scrolls to the Impact Stats section */}
+          <MotionBox
+            {...popIn(1.1)}
+            display="inline-block"
+            onClick={() => scrollToSection('impact')}
+            cursor="pointer"
+            title="View our impact stats"
+          >
             <HStack
               display="inline-flex"
               align="center"
@@ -484,6 +494,9 @@ const Hero = () => {
         }}
         animate={{ y: [0, 8, 0] }}
         transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
+        onClick={() => scrollToSection('about')}
+        cursor="pointer"
+        aria-label="Scroll to learn more"
       >
         <Box
           as={MdExpandMore}
