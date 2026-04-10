@@ -129,6 +129,7 @@ const TeamCard = ({ member }) => {
             }} />
 
             {/* Avatar with DiceBear src + Chakra name fallback */}
+            {/* Avatar is a v3 namespace — must use Avatar.Root / Avatar.Image / Avatar.Fallback */}
             <Box
               w="90px"
               h="90px"
@@ -140,13 +141,10 @@ const TeamCard = ({ member }) => {
               position="relative"
               zIndex={1}
             >
-              <Avatar
-                src={avatarUrl}
-                name={member.name}
-                size="xl"
-                w="100%"
-                h="100%"
-              />
+              <Avatar.Root w="full" h="full" borderRadius="full">
+                <Avatar.Image src={avatarUrl} alt={member.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <Avatar.Fallback name={member.name} w="full" h="full" fontSize="lg" />
+              </Avatar.Root>
             </Box>
 
             {/* Name */}
