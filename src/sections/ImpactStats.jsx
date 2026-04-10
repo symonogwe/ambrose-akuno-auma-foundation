@@ -54,8 +54,8 @@ const StatCard = ({ stat, index, isLast }) => {
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.2, ease: 'easeOut' }}
     >
-      {/* Icon — gold in both modes */}
-      <Box color="#F59E0B" fontSize="32px" mb={4} lineHeight={1}>
+      {/* Icon — gold in both modes, decorative (stat value is the meaningful content) */}
+      <Box color="#F59E0B" fontSize="32px" mb={4} lineHeight={1} aria-hidden="true">
         <Icon />
       </Box>
 

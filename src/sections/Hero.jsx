@@ -202,7 +202,7 @@ const Hero = () => {
               >
                 Learn More
                 <MotionBox as="span" display="inline-flex" alignItems="center" ml={2} whileHover={{ x: 4 }}>
-                  <Box as={FiArrowRight} />
+                  <Box as={FiArrowRight} aria-hidden="true" />
                 </MotionBox>
               </Button>
 
@@ -243,6 +243,7 @@ const Hero = () => {
                 fontSize="md"
                 display="flex"
                 alignItems="center"
+                aria-hidden="true"
               >
                 ♥
               </Box>
@@ -489,6 +490,7 @@ const Hero = () => {
           fontSize="32px"
           color="#2563EB"
           display="block"
+          aria-hidden="true"
         />
       </MotionBox>
     </Box>

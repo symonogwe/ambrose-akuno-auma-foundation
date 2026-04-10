@@ -62,7 +62,7 @@ const FlipCard = ({ icon, name, tagline, description }) => {
             width: '100px', height: '100px', borderRadius: '50%',
             background: 'rgba(255,255,255,0.08)',
           }} />
-          <div style={{ fontSize: '2.6rem', marginBottom: '12px', color: 'rgba(255,255,255,0.9)' }}>
+          <div style={{ fontSize: '2.6rem', marginBottom: '12px', color: 'rgba(255,255,255,0.9)' }} aria-hidden="true">
             <Icon />
           </div>
           <p style={{ margin: 0, fontWeight: 700, fontSize: '15px', color: 'white', textAlign: 'center', marginBottom: '8px' }}>

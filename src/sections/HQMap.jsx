@@ -106,6 +106,7 @@ const HQMap = () => {
               <Box
                 as="iframe"
                 src={MAP_EMBED_URL}
+                title="AAAF Headquarters location map"
                 width="100%"
                 height="480px"
                 border="none"
@@ -136,6 +137,7 @@ const HQMap = () => {
                 color="#F59E0B"
                 fontSize="18px"
                 flexShrink={0}
+                aria-hidden="true"
               />
               <Text>123 High Street, Slough, SL1 1HP, United Kingdom</Text>
             </Flex>
@@ -153,6 +155,7 @@ const HQMap = () => {
                 color="#F59E0B"
                 fontSize="18px"
                 flexShrink={0}
+                aria-hidden="true"
               />
               <Text>info@ambroseakunoaumafoundation.org</Text>
             </Flex>
@@ -165,6 +168,7 @@ const HQMap = () => {
                   color="#F59E0B"
                   fontSize="18px"
                   flexShrink={0}
+                  aria-hidden="true"
                 />
                 <Text>Mon–Fri: 9am–5pm GMT</Text>
               </Flex>
@@ -174,6 +178,7 @@ const HQMap = () => {
                   color="#F59E0B"
                   fontSize="18px"
                   flexShrink={0}
+                  aria-hidden="true"
                 />
                 {/* TODO: Replace with real phone number */}
                 <Text>+44 (0) 000 000 0000</Text>
@@ -311,7 +316,7 @@ const HQMap = () => {
                 >
                   <Flex align="center" gap={2}>
                     Send Message
-                    <Box as={MdSend} fontSize="16px" />
+                    <Box as={MdSend} fontSize="16px" aria-hidden="true" />
                   </Flex>
                 </Button>
               </Motion.div>

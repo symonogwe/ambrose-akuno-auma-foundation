@@ -93,7 +93,7 @@ const Navbar = () => {
 
           {/* ── Logo ─────────────────────────────────────────────── */}
           <HStack gap={2} cursor="pointer" onClick={() => handleNavClick('#hero')}>
-            <Box color="#F59E0B" fontSize="28px" lineHeight={1} display="flex" alignItems="center">
+            <Box color="#F59E0B" fontSize="28px" lineHeight={1} display="flex" alignItems="center" aria-hidden="true">
               <MdVolunteerActivism />
             </Box>
             <HStack gap={1} align="baseline">
@@ -154,7 +154,7 @@ const Navbar = () => {
               _hover={{ bg: toggleHoverBg }}
               style={{ transition: 'color 0.35s' }}
             >
-              {colorMode === 'light' ? <BsMoonFill /> : <BsSunFill />}
+              {colorMode === 'light' ? <BsMoonFill aria-hidden="true" /> : <BsSunFill aria-hidden="true" />}
             </IconButton>
 
             <Button
@@ -183,7 +183,7 @@ const Navbar = () => {
               color={textColor}
               onClick={toggleColorMode}
             >
-              {colorMode === 'light' ? <BsMoonFill /> : <BsSunFill />}
+              {colorMode === 'light' ? <BsMoonFill aria-hidden="true" /> : <BsSunFill aria-hidden="true" />}
             </IconButton>
             <IconButton
               aria-label="Open navigation menu"
@@ -193,7 +193,7 @@ const Navbar = () => {
               color={textColor}
               onClick={onOpen}
             >
-              <FiMenu size={20} />
+              <FiMenu size={20} aria-hidden="true" />
             </IconButton>
           </HStack>
         </Flex>
@@ -217,7 +217,7 @@ const Navbar = () => {
             >
               <Flex align="center" justify="space-between">
                 <HStack gap={2}>
-                  <Box color="#F59E0B" fontSize="24px" display="flex" alignItems="center">
+                  <Box color="#F59E0B" fontSize="24px" display="flex" alignItems="center" aria-hidden="true">
                     <MdVolunteerActivism />
                   </Box>
                   <Text fontWeight="800" letterSpacing="widest" fontSize="md">

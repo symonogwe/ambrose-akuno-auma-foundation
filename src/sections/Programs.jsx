@@ -101,6 +101,7 @@ const ProgramCard = ({ program, onOpen, isLarge }) => {
           color="white"
           fontSize={isLarge ? '4rem' : '2.8rem'}
           style={{ filter: 'drop-shadow(0 4px 14px rgba(0,0,0,0.18))', position: 'relative', zIndex: 1 }}
+          aria-hidden="true"
         >
           <Icon />
         </Box>
@@ -137,7 +138,7 @@ const ProgramCard = ({ program, onOpen, isLarge }) => {
           >
             <Text>Learn More</Text>
             <MotionBox display="inline-flex" alignItems="center" whileHover={{ x: 4 }} transition={{ duration: 0.2 }}>
-              <Box as={MdArrowForward} fontSize="16px" />
+              <Box as={MdArrowForward} fontSize="16px" aria-hidden="true" />
             </MotionBox>
           </HStack>
         </Box>
@@ -188,7 +189,7 @@ const ProgramModal = ({ program, open, onClose }) => {
             <Box position="absolute" top="-20px" right="-20px" w="130px" h="130px" borderRadius="full" bg="rgba(255,255,255,0.1)" />
             <Box position="absolute" bottom="-30px" left="-30px" w="150px" h="150px" borderRadius="full" bg="rgba(255,255,255,0.07)" />
 
-            <Box color="white" fontSize="3rem" style={{ position: 'relative', zIndex: 1 }}>
+            <Box color="white" fontSize="3rem" style={{ position: 'relative', zIndex: 1 }} aria-hidden="true">
               <Icon />
             </Box>
             <DialogTitle asChild>

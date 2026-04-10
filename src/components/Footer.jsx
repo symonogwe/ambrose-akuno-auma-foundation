@@ -70,7 +70,7 @@ const Footer = () => {
           <Motion.div {...colVariant(0)}>
             {/* Logo row */}
             <Flex align="center" gap={2} mb={4}>
-              <Box as={MdFavorite} color="#F59E0B" fontSize="24px" />
+              <Box as={MdFavorite} color="#F59E0B" fontSize="24px" aria-hidden="true" />
               <Text fontWeight="bold" fontSize="xl" color="white" lineHeight="1">
                 AAAF
               </Text>
@@ -100,6 +100,7 @@ const Footer = () => {
                         fontSize="22px"
                         color="gray.400"
                         _hover={{ color: '#F59E0B' }}
+                        aria-hidden="true"
                       />
                     </Motion.a>
                   </Tooltip.Trigger>
@@ -133,7 +134,7 @@ const Footer = () => {
                   cursor="pointer"
                   _hover={{ color: 'white', textDecoration: 'none' }}
                 >
-                  <Box as={MdChevronRight} fontSize="16px" mr={1} />
+                  <Box as={MdChevronRight} fontSize="16px" mr={1} aria-hidden="true" />
                   {item}
                 </Link>
               </Motion.div>
@@ -162,7 +163,7 @@ const Footer = () => {
                   cursor="pointer"
                   _hover={{ color: 'white', textDecoration: 'none' }}
                 >
-                  <Box as={MdChevronRight} fontSize="16px" mr={1} />
+                  <Box as={MdChevronRight} fontSize="16px" mr={1} aria-hidden="true" />
                   {item}
                 </Link>
               </Motion.div>
@@ -259,7 +260,7 @@ const Footer = () => {
               _hover={{ color: 'white' }}
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
-              <Box as={MdKeyboardArrowUp} fontSize="20px" />
+              <Box as={MdKeyboardArrowUp} fontSize="20px" aria-hidden="true" />
             </IconButton>
           </Flex>
         </Flex>

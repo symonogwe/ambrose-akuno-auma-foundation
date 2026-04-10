@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Text, Heading, Avatar, Flex } from '@chakra-ui/react';
+import { Box, Text, Heading, Avatar } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { useColorModeValue } from '../components/ui/ColorModeProvider';
@@ -71,9 +71,8 @@ const TeamCard = ({ member }) => {
       background="linear-gradient(135deg, #2563EB, #F59E0B)"
       borderRadius="18px"
       p="2px"
-      w="200px"
+      w="full"
       h="260px"
-      flexShrink={0}
     >
       {/* Inner card — provides background + perspective for 3D flip */}
       <Box
@@ -142,7 +141,7 @@ const TeamCard = ({ member }) => {
               zIndex={1}
             >
               <Avatar.Root w="full" h="full" borderRadius="full">
-                <Avatar.Image src={avatarUrl} alt={member.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <Avatar.Image src={avatarUrl} alt={member.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 <Avatar.Fallback name={member.name} w="full" h="full" fontSize="lg" />
               </Avatar.Root>
             </Box>
@@ -263,23 +262,25 @@ const TeamCard = ({ member }) => {
                 href={member.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`${member.name} on LinkedIn`}
                 style={{ color: 'white', fontSize: '20px', display: 'inline-flex' }}
                 whileHover={{ scale: 1.2, color: '#F59E0B' }}
                 transition={{ duration: 0.2 }}
                 onClick={(e) => e.stopPropagation()}
               >
-                <FaLinkedin />
+                <FaLinkedin aria-hidden="true" />
               </MotionA>
               <MotionA
                 href={member.twitter}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`${member.name} on Twitter`}
                 style={{ color: 'white', fontSize: '20px', display: 'inline-flex' }}
                 whileHover={{ scale: 1.2, color: '#F59E0B' }}
                 transition={{ duration: 0.2 }}
                 onClick={(e) => e.stopPropagation()}
               >
-                <FaTwitter />
+                <FaTwitter aria-hidden="true" />
               </MotionA>
             </div>
           </div>
@@ -354,14 +355,14 @@ const Team = () => {
         {/* ── Team cards ─────────────────────────────────────────────── */}
         {/*
           Layout:
-          - Desktop (lg): 5 cards in a single row, centered
-          - Tablet (md):  3 + 2 layout via flex wrap + center justify
-          - Mobile:       2 columns, last card centered (flex wrap handles this)
+          - Mobile (base): 2 columns
+          - Tablet (sm):   3 columns
+          - Desktop (lg):  5 columns, all in one row
         */}
-        <Flex
-          flexWrap="wrap"
-          justifyContent="center"
-          gap={{ base: 5, md: 6 }}
+        <Box
+          display="grid"
+          gridTemplateColumns={{ base: 'repeat(2, 1fr)', sm: 'repeat(3, 1fr)', lg: 'repeat(5, 1fr)' }}
+          gap={{ base: 4, md: 5, lg: 6 }}
         >
           {TEAM.map((member, i) => (
             <MotionBox
@@ -374,7 +375,7 @@ const Team = () => {
               <TeamCard member={member} />
             </MotionBox>
           ))}
-        </Flex>
+        </Box>
 
       </Box>
     </Box>
