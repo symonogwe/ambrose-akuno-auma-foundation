@@ -41,9 +41,9 @@ const AnimatedCounter = ({ target, suffix = '', duration = 2.5 }) => {
 
   return (
     // ref must be on a real DOM element — span keeps it inline with the number
+    // color is inherited from the parent so the caller controls it
     <span ref={ref}>
-      {count}
-      <span style={{ color: '#F59E0B' }}>{suffix}</span>
+      {count}{suffix}
     </span>
   );
 };
