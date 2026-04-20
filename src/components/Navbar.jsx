@@ -89,11 +89,12 @@ const Navbar = () => {
         py={scrolled ? '12px' : '20px'}
         bg={navBg}
         borderBottom={scrolled ? '1px solid' : 'none'}
-        borderColor={scrolledBorderColor}
+        borderColor={scrolled ? scrolledBorderColor : 'transparent'}
+        boxShadow={scrolled ? 'sm' : 'none'}
         style={{ transition: 'background 0.35s ease, padding 0.35s ease, border-color 0.35s ease' }}
-        initial={{ y: -72, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.55, ease: 'easeOut' }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.2, delay: 0 }}
       >
         <Flex align="center" justify="space-between" maxW="1280px" mx="auto">
 

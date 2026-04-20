@@ -12,7 +12,10 @@ import HQMap from './sections/HQMap';
 
 const App = () => {
   return (
-    <Box>
+    <Box
+      minH="100vh"
+      overflowX="hidden"
+    >
       <a className="skip-link" href="#main-content">Skip to content</a>
       <Toaster />
       <Navbar />

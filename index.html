@@ -2,6 +2,48 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      (function() {
+        try {
+          var d = document.documentElement;
+          var mode = localStorage.getItem('color-mode');
+          if (mode === 'dark') {
+            d.classList.add('dark');
+            d.style.backgroundColor = '#0A1628';
+          } else {
+            d.style.backgroundColor = '#FFFFFF';
+          }
+          d.style.border = 'none';
+          d.style.outline = 'none';
+          d.style.outlineColor = 'transparent';
+          document.body && (document.body.style.border = 'none');
+          document.body && (document.body.style.outline = 'none');
+        } catch(e) {}
+      })();
+    </script>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        background-color: #FFFFFF;
+        min-height: 100vh;
+        border: none;
+        outline: none;
+      }
+      html.dark,
+      html.dark body {
+        background-color: #0A1628;
+      }
+      #root {
+        background-color: #FFFFFF;
+        min-height: 100vh;
+        border: none;
+        outline: none;
+      }
+      html.dark #root {
+        background-color: #0A1628;
+      }
+    </style>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ambrose Akuno Auma Foundation</title>

@@ -1,11 +1,44 @@
-/* Minimal global reset — all styling handled by Chakra UI */
+:root {
+  --chakra-colors-border: transparent !important;
+  --chakra-border-color: transparent !important;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
+  outline-color: transparent;
+}
+
+html {
+  background-color: #FFFFFF;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  border: none !important;
+  outline: none !important;
+}
+
+html.dark {
+  background-color: #0A1628;
 }
 
 body {
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+  background-color: transparent;
+  border: none !important;
+  outline: none !important;
+}
+
+#root {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: #FFFFFF;
+}
+
+html.dark #root {
+  background-color: #0A1628;
 }
 
 /* Skip-to-content link for keyboard accessibility */
@@ -21,13 +54,13 @@ body {
 }
 .skip-link:focus { top: 0; }
 
-/* Typewriter cursor — calm 1.2s blink */
+/* Typewriter cursor blink */
 @keyframes cursorBlink {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0; }
 }
 
-/* Respect user's reduced-motion preference */
+/* Respect reduced-motion preference */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

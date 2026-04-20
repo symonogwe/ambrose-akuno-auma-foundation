@@ -11,19 +11,38 @@
 
 import { createContext, useContext, useState } from 'react';
 
+const initColorMode = () => {
+  try {
+    const stored = localStorage.getItem('color-mode');
+    if (stored === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  // eslint-disable-next-line no-empty
+  } catch {} // localStorage may be unavailable (e.g. private browsing)
+};
+initColorMode();
+
 const ColorModeContext = createContext({
   colorMode: 'light',
   toggleColorMode: () => {},
 });
 
 export const ColorModeProvider = ({ children }) => {
-  const [colorMode, setColorMode] = useState('light');
+  const [colorMode, setColorMode] = useState(() => {
+    try {
+      return localStorage.getItem('color-mode') === 'dark' ? 'dark' : 'light';
+    } catch {
+      return 'light';
+    }
+  });
 
   const toggleColorMode = () => {
     setColorMode((prev) => {
       const next = prev === 'light' ? 'dark' : 'light';
-      // Chakra v3 resolves the `_dark` condition via `.dark` on <html>
       document.documentElement.classList.toggle('dark', next === 'dark');
+      try { localStorage.setItem('color-mode', next); } catch {} // eslint-disable-line no-empty
       return next;
     });
   };
