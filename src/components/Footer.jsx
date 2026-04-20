@@ -89,20 +89,18 @@ const Footer = () => {
               {socialIcons.map(({ Icon, label }) => (
                 <Tooltip.Root key={label} openDelay={200} closeDelay={100}>
                   <Tooltip.Trigger asChild>
-                    <Motion.a
+                    <Box
+                      as="a"
                       href="#"
                       aria-label={label}
-                      whileHover={{ y: -3, scale: 1.1 }}
-                      style={{ marginRight: '16px', display: 'inline-flex' }}
+                      mr={4}
+                      display="inline-flex"
+                      color="gray.400"
+                      _hover={{ color: '#F59E0B' }}
+                      style={{ transition: 'color 0.2s ease' }}
                     >
-                      <Box
-                        as={Icon}
-                        fontSize="22px"
-                        color="gray.400"
-                        _hover={{ color: '#F59E0B' }}
-                        aria-hidden="true"
-                      />
-                    </Motion.a>
+                      <Box as={Icon} fontSize="22px" aria-hidden="true" />
+                    </Box>
                   </Tooltip.Trigger>
                   <Tooltip.Positioner>
                     <Tooltip.Content>{label}</Tooltip.Content>

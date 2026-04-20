@@ -7,26 +7,22 @@ import { MdExpandMore } from 'react-icons/md';
 import { useColorModeValue } from '../components/ui/ColorModeProvider';
 import { scrollToSection } from '../utils/smoothScroll';
 
-// Animated Chakra primitives
 const MotionBox = motion(Box);
 
 // ── Animation variant helpers ────────────────────────────────────────────────
 
-/** Fades + slides up from below */
 const fadeUp = (delay = 0) => ({
   initial:    { opacity: 0, y: 32 },
   animate:    { opacity: 1, y: 0  },
   transition: { duration: 0.65, delay, ease: [0.25, 0.46, 0.45, 0.94] },
 });
 
-/** Simple fade in */
 const fadeIn = (delay = 0) => ({
   initial:    { opacity: 0 },
   animate:    { opacity: 1 },
   transition: { duration: 0.65, delay, ease: 'easeOut' },
 });
 
-/** Pop in with slight scale */
 const popIn = (delay = 0) => ({
   initial:    { opacity: 0, scale: 0.82 },
   animate:    { opacity: 1, scale: 1    },
@@ -44,63 +40,26 @@ const Hero = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // All color mode values resolved at top — no conditional hook calls
-  const heroBg = useColorModeValue(
-    'linear-gradient(145deg, #f0f4ff 0%, #e8effd 50%, #f5f8ff 100%)',
-    'radial-gradient(ellipse 120% 80% at 50% 0%, #1a2e50 0%, #0A1628 65%)'
-  );
-  const gradientMesh = useColorModeValue(
-    'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(37,99,235,0.12) 0%, transparent 60%)',
-    'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(37,99,235,0.25) 0%, transparent 60%)'
-  );
-  const headingColor  = useColorModeValue('#0A1628', '#F0F4FF');
-  const subTextColor  = useColorModeValue('gray.600', 'gray.300');
-  const badgeBg       = useColorModeValue('rgba(255,255,255,0.8)', 'rgba(10,22,40,0.8)');
+  // All color mode values resolved at top level — no conditional hook calls
+  const heroBg           = useColorModeValue('#FFFFFF', '#0A1628');
+  const headingColor     = useColorModeValue('#0A1628', '#F0F4FF');
+  const subTextColor     = useColorModeValue('gray.600', 'gray.300');
+  const cardBg           = useColorModeValue('white', 'white');
+  const badgeBg          = useColorModeValue('white', 'gray.800');
+  const badgeBorderColor = useColorModeValue('gray.200', 'gray.700');
+  const secondaryColor   = useColorModeValue('#0A1628', '#F7F8FA');
 
   return (
     <Box
       id="hero"
       minH="100vh"
-      background={heroBg}
+      bg={heroBg}
       display="flex"
       alignItems="center"
       position="relative"
       overflow="hidden"
-      // Push content below fixed navbar
       pt={{ base: '80px', lg: '0' }}
     >
-      {/* Gradient mesh overlay */}
-      <Box
-        position="absolute"
-        inset={0}
-        background={gradientMesh}
-        pointerEvents="none"
-      />
-
-      {/* Decorative background blobs */}
-      <Box
-        position="absolute"
-        top="-10%"
-        right="-5%"
-        w="500px"
-        h="500px"
-        borderRadius="full"
-        bg="rgba(37,99,235,0.05)"
-        filter="blur(80px)"
-        pointerEvents="none"
-      />
-      <Box
-        position="absolute"
-        bottom="-15%"
-        left="-10%"
-        w="400px"
-        h="400px"
-        borderRadius="full"
-        bg="rgba(245,158,11,0.05)"
-        filter="blur(80px)"
-        pointerEvents="none"
-      />
-
       <Flex
         maxW="1280px"
         mx="auto"
@@ -194,7 +153,7 @@ const Hero = () => {
                 size="lg"
                 py={4}
                 px={8}
-                borderRadius="full"
+                borderRadius="6px"
                 fontWeight="700"
                 bg="#2563EB"
                 color="white"
@@ -213,14 +172,14 @@ const Hero = () => {
                 size="lg"
                 py={4}
                 px={8}
-                borderRadius="full"
+                borderRadius="6px"
                 fontWeight="700"
                 variant="outline"
                 border="2px solid"
-                borderColor="#2563EB"
-                color="#2563EB"
+                borderColor={secondaryColor}
+                color={secondaryColor}
                 bg="transparent"
-                _hover={{ bg: '#2563EB', color: 'white', transform: 'translateY(-2px)' }}
+                _hover={{ bg: secondaryColor, color: 'white', transform: 'translateY(-2px)' }}
                 style={{ transition: 'all 0.2s ease' }}
                 onClick={() => scrollToSection('contact')}
               >
@@ -245,16 +204,11 @@ const Hero = () => {
               borderRadius="full"
               px={4}
               py={2}
-              border="1px solid rgba(245,158,11,0.3)"
-              style={{ backdropFilter: 'blur(8px)' }}
+              border="1px solid"
+              borderColor={badgeBorderColor}
+              boxShadow="0 2px 8px rgba(0,0,0,0.08)"
             >
-              <Box
-                color="#F59E0B"
-                fontSize="md"
-                display="flex"
-                alignItems="center"
-                aria-hidden="true"
-              >
+              <Box color="#F59E0B" fontSize="md" display="flex" alignItems="center" aria-hidden="true">
                 ♥
               </Box>
               <Text fontSize="sm" fontWeight="600" color="#1D4ED8">
@@ -271,25 +225,26 @@ const Hero = () => {
           justifyContent={{ base: 'center', lg: 'flex-end' }}
           alignItems="center"
         >
-          {/* Slide in from right, with glow */}
+          {/* Slide in from right */}
           <MotionBox
             initial={{ opacity: 0, x: 72 }}
             animate={{ opacity: 1, x: 0  }}
             transition={{ duration: 0.75, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-            filter="drop-shadow(0 0 40px rgba(37,99,235,0.25))"
           >
             {/* Gentle infinite floating animation */}
             <MotionBox
               animate={{ y: [0, -14, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
             >
-              {/* Card */}
+              {/* Clean white card */}
               <Box
                 w={{ base: '270px', sm: '320px', md: '360px', lg: '380px' }}
                 h={{ base: '320px', sm: '380px', md: '430px', lg: '460px' }}
-                borderRadius="3xl"
-                background="linear-gradient(145deg, #34d399 0%, #06b6d4 40%, #818cf8 80%, #c084fc 100%)"
-                shadow="0 32px 80px rgba(37,99,235,0.22)"
+                borderRadius="16px"
+                bg={cardBg}
+                boxShadow="0 20px 60px rgba(0,0,0,0.12)"
+                border="1px solid"
+                borderColor="gray.100"
                 position="relative"
                 overflow="hidden"
                 display="flex"
@@ -297,37 +252,7 @@ const Hero = () => {
                 alignItems="center"
                 justifyContent="center"
               >
-                {/* Decorative background rings */}
-                <Box
-                  position="absolute"
-                  top="-50px"
-                  right="-50px"
-                  w="180px"
-                  h="180px"
-                  borderRadius="full"
-                  border="2px solid rgba(255,255,255,0.2)"
-                />
-                <Box
-                  position="absolute"
-                  top="-80px"
-                  right="-80px"
-                  w="260px"
-                  h="260px"
-                  borderRadius="full"
-                  border="2px solid rgba(255,255,255,0.1)"
-                />
-                <Box
-                  position="absolute"
-                  bottom="-40px"
-                  left="-40px"
-                  w="160px"
-                  h="160px"
-                  borderRadius="full"
-                  bg="rgba(255,255,255,0.1)"
-                  filter="blur(20px)"
-                />
-
-                {/* ── Community illustration — stacked silhouette shapes ── */}
+                {/* ── Community illustration — blue palette on white ── */}
                 <Box position="relative" w="220px" h="200px" mb={2}>
                   {/* Central figure (tallest) */}
                   <Stack
@@ -338,144 +263,72 @@ const Hero = () => {
                     left="50%"
                     style={{ transform: 'translateX(-50%)' }}
                   >
-                    <Box
-                      w="52px"
-                      h="52px"
-                      borderRadius="full"
-                      bg="rgba(255,255,255,0.92)"
-                      shadow="0 4px 12px rgba(0,0,0,0.15)"
-                    />
-                    <Box
-                      w="72px"
-                      h="90px"
-                      borderRadius="24px 24px 16px 16px"
-                      bg="rgba(255,255,255,0.75)"
-                      mt="-4px"
-                    />
+                    <Box w="52px" h="52px" borderRadius="full" bg="#2563EB" shadow="0 4px 12px rgba(37,99,235,0.3)" />
+                    <Box w="72px" h="90px" borderRadius="24px 24px 16px 16px" bg="#3b82f6" mt="-4px" />
                   </Stack>
 
                   {/* Left figure */}
-                  <Stack
-                    align="center"
-                    gap={0}
-                    position="absolute"
-                    bottom={0}
-                    left="8%"
-                  >
-                    <Box
-                      w="42px"
-                      h="42px"
-                      borderRadius="full"
-                      bg="rgba(255,255,255,0.88)"
-                      shadow="0 4px 10px rgba(0,0,0,0.12)"
-                    />
-                    <Box
-                      w="58px"
-                      h="72px"
-                      borderRadius="20px 20px 12px 12px"
-                      bg="rgba(255,255,255,0.65)"
-                      mt="-4px"
-                    />
+                  <Stack align="center" gap={0} position="absolute" bottom={0} left="8%">
+                    <Box w="42px" h="42px" borderRadius="full" bg="#1d4ed8" shadow="0 4px 10px rgba(37,99,235,0.25)" />
+                    <Box w="58px" h="72px" borderRadius="20px 20px 12px 12px" bg="#2563EB" opacity={0.85} mt="-4px" />
                   </Stack>
 
                   {/* Right figure */}
-                  <Stack
-                    align="center"
-                    gap={0}
-                    position="absolute"
-                    bottom={0}
-                    right="8%"
-                  >
-                    <Box
-                      w="44px"
-                      h="44px"
-                      borderRadius="full"
-                      bg="rgba(255,255,255,0.88)"
-                      shadow="0 4px 10px rgba(0,0,0,0.12)"
-                    />
-                    <Box
-                      w="60px"
-                      h="76px"
-                      borderRadius="20px 20px 12px 12px"
-                      bg="rgba(255,255,255,0.65)"
-                      mt="-4px"
-                    />
+                  <Stack align="center" gap={0} position="absolute" bottom={0} right="8%">
+                    <Box w="44px" h="44px" borderRadius="full" bg="#1d4ed8" shadow="0 4px 10px rgba(37,99,235,0.25)" />
+                    <Box w="60px" h="76px" borderRadius="20px 20px 12px 12px" bg="#2563EB" opacity={0.85} mt="-4px" />
                   </Stack>
 
                   {/* Small figure left-back */}
-                  <Stack
-                    align="center"
-                    gap={0}
-                    position="absolute"
-                    bottom="30px"
-                    left="22%"
-                  >
-                    <Box w="32px" h="32px" borderRadius="full" bg="rgba(255,255,255,0.6)" />
-                    <Box w="44px" h="54px" borderRadius="14px 14px 10px 10px" bg="rgba(255,255,255,0.45)" mt="-3px" />
+                  <Stack align="center" gap={0} position="absolute" bottom="30px" left="22%">
+                    <Box w="32px" h="32px" borderRadius="full" bg="#93c5fd" />
+                    <Box w="44px" h="54px" borderRadius="14px 14px 10px 10px" bg="#bfdbfe" mt="-3px" />
                   </Stack>
 
                   {/* Small figure right-back */}
-                  <Stack
-                    align="center"
-                    gap={0}
-                    position="absolute"
-                    bottom="30px"
-                    right="22%"
-                  >
-                    <Box w="34px" h="34px" borderRadius="full" bg="rgba(255,255,255,0.6)" />
-                    <Box w="46px" h="56px" borderRadius="14px 14px 10px 10px" bg="rgba(255,255,255,0.45)" mt="-3px" />
+                  <Stack align="center" gap={0} position="absolute" bottom="30px" right="22%">
+                    <Box w="34px" h="34px" borderRadius="full" bg="#93c5fd" />
+                    <Box w="46px" h="56px" borderRadius="14px 14px 10px 10px" bg="#bfdbfe" mt="-3px" />
                   </Stack>
 
-                  {/* Ground / horizon line */}
+                  {/* Ground line */}
                   <Box
                     position="absolute"
                     bottom={0}
                     left="5%"
                     right="5%"
                     h="3px"
-                    bg="rgba(255,255,255,0.3)"
+                    bg="#dbeafe"
                     borderRadius="full"
                   />
                 </Box>
 
                 {/* Card label */}
                 <Box textAlign="center" px={8} mt={4}>
-                  <Text
-                    fontWeight="800"
-                    color="white"
-                    fontSize="xl"
-                    lineHeight="1.2"
-                    letterSpacing="-0.01em"
-                  >
+                  <Text fontWeight="800" color="#0A1628" fontSize="xl" lineHeight="1.2" letterSpacing="-0.01em">
                     Community First
                   </Text>
-                  <Text
-                    color="rgba(255,255,255,0.75)"
-                    fontSize="sm"
-                    mt={1}
-                    fontWeight="400"
-                  >
+                  <Text color="gray.500" fontSize="sm" mt={1} fontWeight="400">
                     Building futures together
                   </Text>
                 </Box>
 
-                {/* Small floating badge inside card */}
+                {/* Small badge inside card */}
                 <Box
                   position="absolute"
                   top="18px"
                   right="18px"
-                  bg="rgba(255,255,255,0.25)"
-                  backdropFilter="blur(10px)"
+                  bg="gray.50"
                   borderRadius="xl"
                   px={3}
                   py={2}
-                  border="1px solid rgba(255,255,255,0.3)"
+                  border="1px solid"
+                  borderColor="gray.200"
                 >
-                  <Text fontSize="xs" fontWeight="700" color="white">
+                  <Text fontSize="xs" fontWeight="700" color="#0A1628">
                     🌍 UK Registered
                   </Text>
                 </Box>
-
               </Box>
             </MotionBox>
           </MotionBox>
@@ -498,13 +351,7 @@ const Hero = () => {
         cursor="pointer"
         aria-label="Scroll to learn more"
       >
-        <Box
-          as={MdExpandMore}
-          fontSize="32px"
-          color="#2563EB"
-          display="block"
-          aria-hidden="true"
-        />
+        <Box as={MdExpandMore} fontSize="32px" color="#2563EB" display="block" aria-hidden="true" />
       </MotionBox>
     </Box>
   );

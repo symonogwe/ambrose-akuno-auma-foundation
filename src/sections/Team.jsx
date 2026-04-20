@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Box, Text, Heading, Avatar } from '@chakra-ui/react';
+import { Box, Text, Heading, Avatar, Tooltip } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { MdInfoOutline } from 'react-icons/md';
 import { useColorModeValue } from '../components/ui/ColorModeProvider';
 
 const MotionBox = motion(Box);
@@ -48,255 +49,221 @@ const TEAM = [
 ];
 
 // ── Flip Card ─────────────────────────────────────────────────────────────────
-// Same 3D CSS technique as Mission section: perspective on container,
-// preserve-3d on rotating inner, backface-visibility hidden on each face.
 
 const TeamCard = ({ member }) => {
   const [flipped, setFlipped] = useState(false);
 
-  // Card background — used for both inner wrapper and front face
-  const cardBg    = useColorModeValue('white', 'gray.800');
-  const nameColor = useColorModeValue('#0A1628', '#F0F4FF');
+  const cardBg          = useColorModeValue('white', '#1e293b');
+  const cardBorderColor = useColorModeValue('#e2e8f0', '#334155');
+  const nameColor       = useColorModeValue('#0A1628', '#F0F4FF');
 
   return (
-    /* Gradient border wrapper */
     <Box
-      background="linear-gradient(135deg, #2563EB, #F59E0B)"
-      borderRadius="18px"
-      p="2px"
+      bg={cardBg}
+      borderRadius="16px"
+      border="1px solid"
+      borderColor={cardBorderColor}
+      boxShadow="0 2px 12px rgba(0,0,0,0.06)"
       w="full"
       h="260px"
+      overflow="hidden"
+      cursor="pointer"
+      style={{
+        perspective: '1000px',
+        transition: 'box-shadow 0.2s ease, border-color 0.2s ease',
+      }}
+      _hover={{ boxShadow: '0 8px 30px rgba(0,0,0,0.12)', borderColor: '#2563EB' }}
+      onMouseEnter={() => setFlipped(true)}
+      onMouseLeave={() => setFlipped(false)}
+      onClick={() => setFlipped((f) => !f)}
     >
-      {/* Inner card — provides background + perspective for 3D flip */}
-      <Box
-        bg={cardBg}
-        borderRadius="16px"
-        overflow="hidden"
-        h="100%"
-        cursor="pointer"
-        style={{ perspective: '1000px' }}
-        onMouseEnter={() => setFlipped(true)}
-        onMouseLeave={() => setFlipped(false)}
-        onClick={() => setFlipped((f) => !f)}
+      {/* Rotating inner element */}
+      <motion.div
+        animate={{ rotateY: flipped ? 180 : 0 }}
+        transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+        style={{
+          width: '100%',
+          height: '100%',
+          position: 'relative',
+          transformStyle: 'preserve-3d',
+        }}
       >
-        {/* Rotating inner element */}
-        <motion.div
-          animate={{ rotateY: flipped ? 180 : 0 }}
-          transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+
+        {/* ── FRONT face ─────────────────────────────────────────── */}
+        <div
           style={{
-            width: '100%',
-            height: '100%',
-            position: 'relative',
-            transformStyle: 'preserve-3d',
+            position: 'absolute',
+            inset: 0,
+            borderRadius: '16px',
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+            backgroundColor: 'transparent',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px 16px 14px',
+            overflow: 'hidden',
           }}
         >
-
-          {/* ── FRONT face ───────────────────────────────────────── */}
-          <div
+          {/* Initials avatar */}
+          <Avatar.Root
             style={{
-              position: 'absolute',
-              inset: 0,
-              borderRadius: '16px',
-              backfaceVisibility: 'hidden',
-              WebkitBackfaceVisibility: 'hidden',
-              backgroundColor: 'transparent',
+              width: '90px',
+              height: '90px',
+              borderRadius: '50%',
+              overflow: 'hidden',
               display: 'flex',
-              flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '20px 16px 14px',
-              overflow: 'hidden',
+              marginBottom: '16px',
+              flexShrink: 0,
+              position: 'relative',
+              zIndex: 1,
             }}
           >
-            {/* Subtle background arc */}
-            <div style={{
-              position: 'absolute',
-              top: '-40px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '180px',
-              height: '180px',
-              borderRadius: '50%',
-              background: 'linear-gradient(145deg, rgba(37,99,235,0.06) 0%, rgba(245,158,11,0.04) 100%)',
-            }} />
-
-            {/* Initials avatar — centered initials, no gold ring */}
-            <Avatar.Root
+            <Avatar.Fallback
+              name={member.name}
               style={{
+                background: 'linear-gradient(135deg, #2563EB, #0A1628)',
+                color: 'white',
+                fontSize: '24px',
+                fontWeight: '700',
                 width: '90px',
                 height: '90px',
                 borderRadius: '50%',
-                overflow: 'hidden',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginBottom: '16px',
-                flexShrink: 0,
-                position: 'relative',
-                zIndex: 1,
+                textAlign: 'center',
+                lineHeight: '1',
+                letterSpacing: '0.05em',
               }}
-            >
-              <Avatar.Fallback
-                name={member.name}
-                style={{
-                  background: 'linear-gradient(135deg, #2563EB, #0A1628)',
-                  color: 'white',
-                  fontSize: '24px',
-                  fontWeight: '700',
-                  width: '90px',
-                  height: '90px',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  textAlign: 'center',
-                  lineHeight: '1',
-                  letterSpacing: '0.05em',
-                }}
-              />
-            </Avatar.Root>
+            />
+          </Avatar.Root>
 
-            {/* Name */}
-            <p style={{
-              margin: 0,
-              fontWeight: 700,
-              fontSize: '14px',
-              color: nameColor,
-              textAlign: 'center',
-              lineHeight: 1.3,
-              marginBottom: '4px',
-              position: 'relative',
-              zIndex: 1,
-            }}>
-              {member.name}
-            </p>
+          {/* Name */}
+          <p style={{
+            margin: 0,
+            fontWeight: 700,
+            fontSize: '14px',
+            color: nameColor,
+            textAlign: 'center',
+            lineHeight: 1.3,
+            marginBottom: '4px',
+            position: 'relative',
+            zIndex: 1,
+          }}>
+            {member.name}
+          </p>
 
-            {/* Role */}
-            <p style={{
-              margin: 0,
-              fontSize: '12px',
-              color: '#F59E0B',
-              fontWeight: 600,
-              textAlign: 'center',
-              marginBottom: '8px',
-              position: 'relative',
-              zIndex: 1,
-            }}>
+          {/* Role */}
+          <p style={{
+            margin: 0,
+            fontSize: '12px',
+            color: '#F59E0B',
+            fontWeight: 600,
+            textAlign: 'center',
+            marginBottom: '8px',
+            position: 'relative',
+            zIndex: 1,
+          }}>
+            {member.role}
+          </p>
+
+          {/* Info icon hint */}
+          <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'center', position: 'relative', zIndex: 1 }}>
+            <Tooltip.Root openDelay={200} closeDelay={100}>
+              <Tooltip.Trigger asChild>
+                <span style={{ display: 'inline-flex', cursor: 'help' }}>
+                  <MdInfoOutline style={{ fontSize: '18px', color: '#9CA3AF' }} aria-hidden="true" />
+                </span>
+              </Tooltip.Trigger>
+              <Tooltip.Positioner>
+                <Tooltip.Content>Hover to learn more</Tooltip.Content>
+              </Tooltip.Positioner>
+            </Tooltip.Root>
+          </div>
+        </div>
+
+        {/* ── BACK face ──────────────────────────────────────────── */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            borderRadius: '16px',
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)',
+            backgroundColor: '#0A1628',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px 16px',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Role pill badge */}
+          <div style={{
+            background: 'rgba(245,158,11,0.2)',
+            borderRadius: '9999px',
+            padding: '4px 12px',
+            marginBottom: '12px',
+            position: 'relative',
+            zIndex: 1,
+          }}>
+            <span style={{ fontSize: '12px', fontWeight: 600, color: '#F59E0B' }}>
               {member.role}
-            </p>
-
-            {/* Flip hint */}
-            <p style={{
-              margin: 0,
-              fontSize: '11px',
-              color: '#F59E0B',
-              fontStyle: 'italic',
-              textAlign: 'center',
-              marginTop: 'auto',
-              position: 'relative',
-              zIndex: 1,
-            }}>
-              ↑ meet me
-            </p>
+            </span>
           </div>
 
-          {/* ── BACK face ────────────────────────────────────────── */}
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              borderRadius: '16px',
-              backfaceVisibility: 'hidden',
-              WebkitBackfaceVisibility: 'hidden',
-              transform: 'rotateY(180deg)',
-              background: 'linear-gradient(145deg, #2563EB 0%, #0A1628 100%)',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '20px 16px',
-              overflow: 'hidden',
-            }}
-          >
-            {/* Decorative rings */}
-            <div style={{
-              position: 'absolute', top: '-30px', right: '-30px',
-              width: '100px', height: '100px', borderRadius: '50%',
-              border: '2px solid rgba(255,255,255,0.1)',
-            }} />
-            <div style={{
-              position: 'absolute', bottom: '-20px', left: '-20px',
-              width: '80px', height: '80px', borderRadius: '50%',
-              background: 'rgba(255,255,255,0.05)',
-            }} />
+          {/* Bio */}
+          <p style={{
+            margin: 0,
+            fontSize: '12px',
+            color: 'rgba(255,255,255,0.88)',
+            textAlign: 'center',
+            lineHeight: 1.65,
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            position: 'relative',
+            zIndex: 1,
+          }}>
+            {member.bio}
+          </p>
 
-            {/* Role pill badge */}
-            <div style={{
-              background: 'rgba(245,158,11,0.2)',
-              borderRadius: '9999px',
-              padding: '4px 12px',
-              marginBottom: '12px',
-              position: 'relative',
-              zIndex: 1,
-            }}>
-              <span style={{ fontSize: '12px', fontWeight: 600, color: '#F59E0B' }}>
-                {member.role}
-              </span>
-            </div>
-
-            {/* Bio */}
-            <p style={{
-              margin: 0,
-              fontSize: '12px',
-              color: 'rgba(255,255,255,0.88)',
-              textAlign: 'center',
-              lineHeight: 1.65,
-              flex: 1,
-              display: 'flex',
-              alignItems: 'center',
-              position: 'relative',
-              zIndex: 1,
-            }}>
-              {member.bio}
-            </p>
-
-            {/* Social icon links — Framer Motion scale + color on hover */}
-            <div style={{
-              display: 'flex',
-              gap: '16px',
-              marginTop: '14px',
-              position: 'relative',
-              zIndex: 1,
-            }}>
-              <MotionA
-                href={member.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${member.name} on LinkedIn`}
-                style={{ color: 'white', fontSize: '20px', display: 'inline-flex' }}
-                whileHover={{ scale: 1.2, color: '#F59E0B' }}
-                transition={{ duration: 0.2 }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <FaLinkedin aria-hidden="true" />
-              </MotionA>
-              <MotionA
-                href={member.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${member.name} on Twitter`}
-                style={{ color: 'white', fontSize: '20px', display: 'inline-flex' }}
-                whileHover={{ scale: 1.2, color: '#F59E0B' }}
-                transition={{ duration: 0.2 }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <FaTwitter aria-hidden="true" />
-              </MotionA>
-            </div>
+          {/* Social icon links */}
+          <div style={{ display: 'flex', gap: '16px', marginTop: '14px', position: 'relative', zIndex: 1 }}>
+            <MotionA
+              href={member.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${member.name} on LinkedIn`}
+              style={{ color: 'white', fontSize: '20px', display: 'inline-flex' }}
+              whileHover={{ color: '#F59E0B' }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <FaLinkedin aria-hidden="true" />
+            </MotionA>
+            <MotionA
+              href={member.twitter}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${member.name} on Twitter`}
+              style={{ color: 'white', fontSize: '20px', display: 'inline-flex' }}
+              whileHover={{ color: '#F59E0B' }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <FaTwitter aria-hidden="true" />
+            </MotionA>
           </div>
+        </div>
 
-        </motion.div>
-      </Box>
+      </motion.div>
     </Box>
   );
 };
@@ -306,18 +273,12 @@ const TeamCard = ({ member }) => {
 const Team = () => {
   const sectionBg = useColorModeValue('#F8FAFF', '#0d1d35');
   const textColor = useColorModeValue('#0A1628', '#F0F4FF');
-  const subColor  = useColorModeValue('#4B5563', '#94A3B8');
-  const dotGrid   = useColorModeValue(
-    'radial-gradient(circle, #e2e8f0 1px, transparent 1px)',
-    'radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)'
-  );
+  const subColor  = useColorModeValue('gray.600', 'gray.300');
 
   return (
     <Box
       id="team"
       bg={sectionBg}
-      backgroundImage={dotGrid}
-      backgroundSize="24px 24px"
       py={{ base: 20, md: 28 }}
       px={{ base: 6, md: 12, lg: 16 }}
     >
@@ -332,15 +293,9 @@ const Team = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <Box mb={4} display="flex" alignItems="center" justifyContent="center" gap={3}>
+          <Box mb={2} display="flex" alignItems="center" justifyContent="center" gap={3}>
             <Box w="3px" h="16px" bg="#F59E0B" borderRadius="full" />
-            <Text
-              fontSize="11px"
-              fontWeight="700"
-              letterSpacing="0.18em"
-              color="#F59E0B"
-              textTransform="uppercase"
-            >
+            <Text fontSize="11px" fontWeight="700" letterSpacing="0.18em" color="#F59E0B" textTransform="uppercase">
               The People Behind the Mission
             </Text>
           </Box>
@@ -349,10 +304,10 @@ const Team = () => {
             as="h2"
             fontFamily="heading"
             fontSize={{ base: '3xl', md: '4xl' }}
-            fontWeight="700"
+            fontWeight="800"
             color={textColor}
             letterSpacing="-0.02em"
-            mb={4}
+            mb={6}
           >
             Meet Our Team
           </Heading>
@@ -363,12 +318,6 @@ const Team = () => {
         </MotionBox>
 
         {/* ── Team cards ─────────────────────────────────────────────── */}
-        {/*
-          Layout:
-          - Mobile (base): 2 columns
-          - Tablet (sm):   3 columns
-          - Desktop (lg):  5 columns, all in one row
-        */}
         <Box
           display="grid"
           gridTemplateColumns={{ base: 'repeat(2, 1fr)', sm: 'repeat(3, 1fr)', lg: 'repeat(5, 1fr)' }}

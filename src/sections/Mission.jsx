@@ -11,7 +11,6 @@ const MotionBox = motion(Box);
 
 const FlipCard = ({ icon, name, tagline, description }) => {
   const [flipped, setFlipped] = useState(false);
-  // Uppercase alias required for JSX component rendering
   const Icon = icon;
 
   return (
@@ -20,13 +19,11 @@ const FlipCard = ({ icon, name, tagline, description }) => {
       h="220px"
       cursor="pointer"
       flexShrink={0}
-      // CSS perspective must live on the container, not the rotating element
       style={{ perspective: '1000px' }}
       onMouseEnter={() => setFlipped(true)}
       onMouseLeave={() => setFlipped(false)}
-      onClick={() => setFlipped((f) => !f)} // touch-friendly toggle
+      onClick={() => setFlipped((f) => !f)}
     >
-      {/* Rotating inner element */}
       <motion.div
         animate={{ rotateY: flipped ? 180 : 0 }}
         transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
@@ -46,29 +43,24 @@ const FlipCard = ({ icon, name, tagline, description }) => {
             borderRadius: '16px',
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',
-            backgroundColor: '#2563EB',
+            backgroundColor: '#FFFFFF',
+            border: '1px solid #e2e8f0',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             padding: '24px',
             overflow: 'hidden',
-            boxShadow: '0 4px 6px rgba(0,0,0,0.07)',
+            boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
           }}
         >
-          {/* Subtle decorative ring */}
-          <div style={{
-            position: 'absolute', top: '-30px', right: '-30px',
-            width: '100px', height: '100px', borderRadius: '50%',
-            background: 'rgba(255,255,255,0.08)',
-          }} />
-          <div style={{ fontSize: '2.6rem', marginBottom: '12px', color: 'rgba(255,255,255,0.9)' }} aria-hidden="true">
+          <div style={{ fontSize: '2.6rem', marginBottom: '12px', color: '#2563EB' }} aria-hidden="true">
             <Icon />
           </div>
-          <p style={{ margin: 0, fontWeight: 700, fontSize: '15px', color: 'white', textAlign: 'center', marginBottom: '8px' }}>
+          <p style={{ margin: 0, fontWeight: 700, fontSize: '15px', color: '#0A1628', textAlign: 'center', marginBottom: '8px' }}>
             {name}
           </p>
-          <p style={{ margin: 0, fontSize: '12px', color: 'rgba(255,255,255,0.72)', textAlign: 'center', lineHeight: 1.5 }}>
+          <p style={{ margin: 0, fontSize: '12px', color: '#6B7280', textAlign: 'center', lineHeight: 1.5 }}>
             {tagline}
           </p>
         </div>
@@ -82,7 +74,7 @@ const FlipCard = ({ icon, name, tagline, description }) => {
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',
             transform: 'rotateY(180deg)',
-            backgroundColor: '#F59E0B',
+            backgroundColor: '#0A1628',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -92,22 +84,10 @@ const FlipCard = ({ icon, name, tagline, description }) => {
             boxShadow: '0 10px 15px rgba(0,0,0,0.1)',
           }}
         >
-          {/* Decorative elements */}
-          <div style={{
-            position: 'absolute', bottom: '10px', right: '10px',
-            width: '32px', height: '32px', borderRadius: '50%',
-            background: 'rgba(255,255,255,0.3)',
-          }} />
-          <div style={{
-            position: 'absolute', top: '10px', left: '10px',
-            width: '20px', height: '20px', borderRadius: '50%',
-            background: 'rgba(255,255,255,0.25)',
-          }} />
-
-          <p style={{ margin: 0, fontWeight: 800, fontSize: '13px', color: '#0A1628', textAlign: 'center', marginBottom: '10px', letterSpacing: '0.01em' }}>
+          <p style={{ margin: 0, fontWeight: 800, fontSize: '13px', color: 'white', textAlign: 'center', marginBottom: '10px', letterSpacing: '0.01em' }}>
             {name}
           </p>
-          <p style={{ margin: 0, fontSize: '11.5px', color: '#1e3a5f', textAlign: 'center', lineHeight: 1.65 }}>
+          <p style={{ margin: 0, fontSize: '11.5px', color: 'rgba(255,255,255,0.8)', textAlign: 'center', lineHeight: 1.65 }}>
             {description}
           </p>
         </div>
@@ -145,20 +125,14 @@ const CARDS = [
 // ── Section ───────────────────────────────────────────────────────────────────
 
 const Mission = () => {
-  const sectionBg  = useColorModeValue('#F8FAFF', '#0d1d35');
-  const textColor  = useColorModeValue('#0A1628', '#F0F4FF');
-  const subColor   = useColorModeValue('#4B5563', '#94A3B8');
-  const dotGrid    = useColorModeValue(
-    'radial-gradient(circle, #e2e8f0 1px, transparent 1px)',
-    'radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)'
-  );
+  const sectionBg = useColorModeValue('white', '#0A1628');
+  const textColor = useColorModeValue('#0A1628', '#F0F4FF');
+  const subColor  = useColorModeValue('gray.600', 'gray.300');
 
   return (
     <Box
       id="mission"
       bg={sectionBg}
-      backgroundImage={dotGrid}
-      backgroundSize="24px 24px"
       py={{ base: 20, md: 28 }}
       px={{ base: 6, md: 12, lg: 16 }}
     >
@@ -182,7 +156,7 @@ const Mission = () => {
           <Box w="4px" h="48px" bg="#F59E0B" borderRadius="full" mb={3} />
 
           {/* Label */}
-          <Box mb={5} display="flex" alignItems="center" gap={3}>
+          <Box mb={2} display="flex" alignItems="center" gap={3}>
             <Box w="3px" h="16px" bg="#F59E0B" borderRadius="full" flexShrink={0} />
             <Text
               fontSize="11px"
@@ -200,7 +174,7 @@ const Mission = () => {
             as="h2"
             fontFamily="heading"
             fontSize={{ base: '3xl', md: '4xl' }}
-            fontWeight="700"
+            fontWeight="800"
             color={textColor}
             lineHeight="1.2"
             letterSpacing="-0.02em"

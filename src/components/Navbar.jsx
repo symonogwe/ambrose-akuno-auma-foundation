@@ -19,11 +19,9 @@ import {
 import { motion } from 'framer-motion';
 import { BsMoonFill, BsSunFill } from 'react-icons/bs';
 import { FiMenu } from 'react-icons/fi';
-import { MdVolunteerActivism } from 'react-icons/md';
 import { useColorMode, useColorModeValue } from './ui/ColorModeProvider';
 import { scrollToSection } from '../utils/smoothScroll';
 
-// Wrap Box in Framer Motion so we can animate it as a nav element
 const MotionBox = motion(Box);
 
 const NAV_LINKS = [
@@ -33,29 +31,25 @@ const NAV_LINKS = [
   { label: 'Impact',   href: '#impact',   target: 'impact'   },
 ];
 
-// Sections watched by the IntersectionObserver for active-link detection
 const OBSERVED_SECTIONS = ['home', 'about', 'programs', 'impact', 'team', 'contact'];
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { open, onOpen, onClose } = useDisclosure();
-  const [scrolled, setScrolled]         = useState(false);
+  const [scrolled, setScrolled]           = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
-  // ── Colors resolved from color mode — all hooks called unconditionally ──────
-  const frostedBg      = useColorModeValue('rgba(255,255,255,0.85)', 'rgba(10,22,40,0.85)');
-  const scrolledBorder = useColorModeValue('1px solid rgba(0,0,0,0.08)', '1px solid rgba(255,255,255,0.08)');
-  const logoColor      = useColorModeValue('#0A1628', '#F7F8FA');
-  const drawerBg       = useColorModeValue('#FFFFFF', '#0A1628');
-  const drawerBorder   = useColorModeValue('rgba(0,0,0,0.08)', 'rgba(255,255,255,0.08)');
-  const toggleHoverBg  = useColorModeValue('rgba(0,0,0,0.06)', 'rgba(255,255,255,0.1)');
-  const navLinkColor   = useColorModeValue('gray.700', 'whiteAlpha.900');
+  // ── Color tokens ────────────────────────────────────────────────────────────
+  const scrolledBg          = useColorModeValue('white', '#0A1628');
+  const scrolledBorderColor = useColorModeValue('gray.100', 'gray.800');
+  const textColor           = useColorModeValue('#0A1628', '#F7F8FA');
+  const foundationColor     = useColorModeValue('gray.600', 'gray.400');
+  const drawerBg            = useColorModeValue('#FFFFFF', '#0A1628');
+  const drawerBorder        = useColorModeValue('rgba(0,0,0,0.08)', 'rgba(255,255,255,0.08)');
+  const toggleHoverBg       = useColorModeValue('rgba(0,0,0,0.06)', 'rgba(255,255,255,0.1)');
+  const navLinkColor        = useColorModeValue('gray.700', 'whiteAlpha.900');
 
-  // Transparent at top → frosted glass once scrolled
-  const navBg     = scrolled ? frostedBg      : 'transparent';
-  const navBorder = scrolled ? scrolledBorder : 'transparent';
-  // Logo + icon buttons: white over dark hero when unscrolled
-  const textColor = scrolled ? logoColor : 'white';
+  const navBg = scrolled ? scrolledBg : 'transparent';
 
   // ── Scroll detection ─────────────────────────────────────────────────────────
   useEffect(() => {
@@ -64,27 +58,20 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // ── Active section detection via IntersectionObserver ────────────────────────
+  // ── Active section detection via IntersectionObserver ───────────────────────
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
         });
       },
-      {
-        rootMargin: '-80px 0px -50% 0px',
-        threshold: 0,
-      }
+      { rootMargin: '-80px 0px -50% 0px', threshold: 0 }
     );
-
     OBSERVED_SECTIONS.forEach((id) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
-
     return () => observer.disconnect();
   }, []);
 
@@ -101,47 +88,32 @@ const Navbar = () => {
         px={{ base: 5, md: 10, lg: 16 }}
         py={scrolled ? '12px' : '20px'}
         bg={navBg}
-        style={{
-          backdropFilter: scrolled ? 'blur(12px)' : 'none',
-          WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
-          borderBottom: navBorder,
-          transition: 'background 0.35s ease, padding 0.35s ease, border-color 0.35s ease',
-        }}
+        borderBottom={scrolled ? '1px solid' : 'none'}
+        borderColor={scrolledBorderColor}
+        style={{ transition: 'background 0.35s ease, padding 0.35s ease, border-color 0.35s ease' }}
         initial={{ y: -72, opacity: 0 }}
-        animate={{ y: 0,   opacity: 1 }}
+        animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.55, ease: 'easeOut' }}
       >
         <Flex align="center" justify="space-between" maxW="1280px" mx="auto">
 
-          {/* ── Logo — click scrolls to top ───────────────────────── */}
-          <HStack
-            gap={2}
-            cursor="pointer"
-            onClick={() => scrollToSection('home')}
-          >
-            <Box color="#F59E0B" fontSize="28px" lineHeight={1} display="flex" alignItems="center" aria-hidden="true">
-              <MdVolunteerActivism />
-            </Box>
-            <HStack gap={1} align="baseline">
-              <Text
-                fontWeight="800"
-                fontSize="lg"
-                color={textColor}
-                letterSpacing="widest"
-                transition="color 0.35s"
-              >
-                AAAF
-              </Text>
-              <Text
-                fontWeight="300"
-                fontSize="md"
-                color={textColor}
-                opacity={0.8}
-                transition="color 0.35s"
-              >
-                Foundation
-              </Text>
-            </HStack>
+          {/* ── Logo — typographic, no icon ─────────────────────────── */}
+          <HStack gap={1} align="baseline" cursor="pointer" onClick={() => scrollToSection('home')}>
+            <Text
+              fontWeight="800"
+              fontSize="lg"
+              color="#2563EB"
+              letterSpacing="widest"
+            >
+              AAAF
+            </Text>
+            <Text
+              fontWeight="300"
+              fontSize="md"
+              color={foundationColor}
+            >
+              Foundation
+            </Text>
           </HStack>
 
           {/* ── Desktop nav links ─────────────────────────────────── */}
@@ -182,7 +154,6 @@ const Navbar = () => {
               color={textColor}
               onClick={toggleColorMode}
               _hover={{ bg: toggleHoverBg }}
-              style={{ transition: 'color 0.35s' }}
             >
               {colorMode === 'light' ? <BsMoonFill aria-hidden="true" /> : <BsSunFill aria-hidden="true" />}
             </IconButton>
@@ -191,12 +162,12 @@ const Navbar = () => {
               size="sm"
               py={2}
               px={6}
-              borderRadius="full"
+              borderRadius="4px"
               fontWeight="700"
               fontSize="sm"
               bg="#2563EB"
               color="white"
-              _hover={{ bg: '#F59E0B', color: 'gray.900' }}
+              _hover={{ bg: '#1d4ed8' }}
               style={{ transition: 'all 0.2s ease' }}
               // TODO: Replace with donation platform URL
               onClick={() => scrollToSection('contact')}
@@ -248,12 +219,12 @@ const Navbar = () => {
               px={5}
             >
               <Flex align="center" justify="space-between">
-                <HStack gap={2}>
-                  <Box color="#F59E0B" fontSize="24px" display="flex" alignItems="center" aria-hidden="true">
-                    <MdVolunteerActivism />
-                  </Box>
-                  <Text fontWeight="800" letterSpacing="widest" fontSize="md">
+                <HStack gap={1} align="baseline">
+                  <Text fontWeight="800" letterSpacing="widest" fontSize="md" color="#2563EB">
                     AAAF
+                  </Text>
+                  <Text fontWeight="300" fontSize="sm" color={foundationColor}>
+                    Foundation
                   </Text>
                 </HStack>
                 <DrawerCloseTrigger position="static" top="unset" insetEnd="unset" />
@@ -288,11 +259,11 @@ const Navbar = () => {
                 <Box pt={4} borderTop="1px solid" borderColor={drawerBorder}>
                   <Button
                     w="full"
-                    borderRadius="full"
+                    borderRadius="4px"
                     fontWeight="700"
                     bg="#2563EB"
                     color="white"
-                    _hover={{ bg: '#F59E0B', color: 'gray.900' }}
+                    _hover={{ bg: '#1d4ed8' }}
                     style={{ transition: 'all 0.2s ease' }}
                     // TODO: Replace with donation platform URL
                     onClick={() => { scrollToSection('contact'); onClose(); }}

@@ -39,6 +39,7 @@ const HQMap = () => {
   const inputBg = useColorModeValue("white", "gray.800");
   const inputBorder = useColorModeValue("gray.200", "gray.600");
   const headingColor = useColorModeValue("gray.800", "white");
+  const mapBorderColor = useColorModeValue("gray.200", "gray.700");
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -96,12 +97,13 @@ const HQMap = () => {
             transition={{ duration: 0.7, ease: "easeOut" }}
             viewport={{ once: true }}
           >
-            {/* Map iframe with gold border wrapper */}
+            {/* Map iframe */}
             <Box
-              border="2px solid rgba(245,158,11,0.4)"
+              border="1px solid"
+              borderColor={mapBorderColor}
               borderRadius="16px"
               overflow="hidden"
-              boxShadow="0 10px 15px rgba(0,0,0,0.1)"
+              boxShadow="0 4px 20px rgba(0,0,0,0.08)"
             >
               <Box
                 as="iframe"
@@ -204,15 +206,14 @@ const HQMap = () => {
               Get In Touch
             </Text>
 
-            {/* Gold vertical accent line (same as Mission section) */}
-            <Box w="4px" h="48px" bg="#F59E0B" borderRadius="full" mb={3} />
-
             <Heading
               as="h3"
               fontFamily="heading"
               color={headingColor}
               mb={3}
               fontSize={{ base: "2xl", md: "3xl" }}
+              borderLeft="4px solid #2563EB"
+              pl={4}
             >
               Contact Us
             </Heading>
@@ -300,26 +301,21 @@ const HQMap = () => {
                 />
               </FieldRoot>
 
-              {/* Send button with Framer Motion scale hover */}
-              <Motion.div
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
+              <Button
+                type="submit"
+                width="100%"
+                bg="#2563EB"
+                color="white"
+                borderRadius="6px"
+                py={6}
+                _hover={{ bg: "#1d4ed8" }}
+                style={{ transition: "background 0.2s ease" }}
               >
-                <Button
-                  type="submit"
-                  width="100%"
-                  bg="#2563EB"
-                  color="white"
-                  borderRadius="8px"
-                  py={6}
-                  _hover={{ bg: "#F59E0B", color: "gray.900" }}
-                >
-                  <Flex align="center" gap={2}>
-                    Send Message
-                    <Box as={MdSend} fontSize="16px" aria-hidden="true" />
-                  </Flex>
-                </Button>
-              </Motion.div>
+                <Flex align="center" gap={2}>
+                  Send Message
+                  <Box as={MdSend} fontSize="16px" aria-hidden="true" />
+                </Flex>
+              </Button>
             </Box>
           </Motion.div>
         </SimpleGrid>

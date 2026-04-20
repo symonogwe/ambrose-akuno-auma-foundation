@@ -296,7 +296,7 @@ const Programs = () => {
   const { open: open2, onOpen: onOpen2, onClose: onClose2 } = useDisclosure();
   const { open: open3, onOpen: onOpen3, onClose: onClose3 } = useDisclosure();
 
-  const sectionBg = useColorModeValue('#FFFFFF', '#0A1628');
+  const sectionBg = useColorModeValue('gray.50', 'gray.900');
   const textColor = useColorModeValue('#0A1628', '#F0F4FF');
   const subColor  = useColorModeValue('#4B5563', '#94A3B8');
 
@@ -324,7 +324,7 @@ const Programs = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <Box mb={4} display="flex" alignItems="center" justifyContent="center" gap={3}>
+          <Box mb={2} display="flex" alignItems="center" justifyContent="center" gap={3}>
             <Box w="3px" h="16px" bg="#F59E0B" borderRadius="full" />
             <Text fontSize="11px" fontWeight="700" letterSpacing="0.18em" color="#F59E0B" textTransform="uppercase">
               What We Do
@@ -335,10 +335,10 @@ const Programs = () => {
             as="h2"
             fontFamily="heading"
             fontSize={{ base: '3xl', md: '4xl' }}
-            fontWeight="700"
+            fontWeight="800"
             color={textColor}
             letterSpacing="-0.02em"
-            mb={4}
+            mb={6}
           >
             Our Programs
           </Heading>
