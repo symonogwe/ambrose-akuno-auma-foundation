@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Box, Flex, Text, Heading, Button, HStack, Stack } from '@chakra-ui/react';
+import { Box, Flex, Text, Heading, Button, HStack } from '@chakra-ui/react';
+import youthImg from '../assets/youth-mentorship.jpg';
 import { motion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
 import { FiArrowRight } from 'react-icons/fi';
@@ -44,7 +45,6 @@ const Hero = () => {
   const heroBg           = useColorModeValue('#FFFFFF', '#0A1628');
   const headingColor     = useColorModeValue('#0A1628', '#F0F4FF');
   const subTextColor     = useColorModeValue('gray.600', 'gray.300');
-  const cardBg           = useColorModeValue('white', 'white');
   const badgeBg          = useColorModeValue('white', 'gray.800');
   const badgeBorderColor = useColorModeValue('gray.200', 'gray.700');
   const secondaryColor   = useColorModeValue('#0A1628', '#F7F8FA');
@@ -248,94 +248,68 @@ const Hero = () => {
               animate={{ y: [0, -14, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
             >
-              {/* Clean white card */}
+              {/* Full-bleed image card */}
               <Box
                 w={{ base: '270px', sm: '320px', md: '360px', lg: '380px' }}
                 h={{ base: '320px', sm: '380px', md: '430px', lg: '460px' }}
                 borderRadius="16px"
-                bg={cardBg}
                 boxShadow="0 20px 60px rgba(0,0,0,0.12)"
-                border="1px solid"
-                borderColor="gray.100"
-                position="relative"
                 overflow="hidden"
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="center"
+                position="relative"
               >
-                {/* ── Community illustration — blue palette on white ── */}
-                <Box position="relative" w="220px" h="200px" mb={2}>
-                  {/* Central figure (tallest) */}
-                  <Stack
-                    align="center"
-                    gap={0}
-                    position="absolute"
-                    bottom={0}
-                    left="50%"
-                    style={{ transform: 'translateX(-50%)' }}
+                {/* Layer 1 — full bleed image */}
+                <Box
+                  position="absolute"
+                  inset={0}
+                  bgImage={`url(${youthImg})`}
+                  bgSize="cover"
+                  bgPosition="center"
+                />
+
+                {/* Layer 2 — gradient overlay */}
+                <Box
+                  position="absolute"
+                  inset={0}
+                  background="linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.05) 100%)"
+                />
+
+                {/* Layer 3 — text pinned to bottom */}
+                <Box
+                  position="absolute"
+                  bottom={0}
+                  left={0}
+                  right={0}
+                  p={6}
+                  zIndex={2}
+                >
+                  <Text
+                    fontWeight="800"
+                    color="white"
+                    fontSize="xl"
+                    lineHeight="1.2"
+                    letterSpacing="-0.01em"
+                    mb={1}
                   >
-                    <Box w="52px" h="52px" borderRadius="full" bg="#2563EB" shadow="0 4px 12px rgba(37,99,235,0.3)" />
-                    <Box w="72px" h="90px" borderRadius="24px 24px 16px 16px" bg="#3b82f6" mt="-4px" />
-                  </Stack>
-
-                  {/* Left figure */}
-                  <Stack align="center" gap={0} position="absolute" bottom={0} left="8%">
-                    <Box w="42px" h="42px" borderRadius="full" bg="#1d4ed8" shadow="0 4px 10px rgba(37,99,235,0.25)" />
-                    <Box w="58px" h="72px" borderRadius="20px 20px 12px 12px" bg="#2563EB" opacity={0.85} mt="-4px" />
-                  </Stack>
-
-                  {/* Right figure */}
-                  <Stack align="center" gap={0} position="absolute" bottom={0} right="8%">
-                    <Box w="44px" h="44px" borderRadius="full" bg="#1d4ed8" shadow="0 4px 10px rgba(37,99,235,0.25)" />
-                    <Box w="60px" h="76px" borderRadius="20px 20px 12px 12px" bg="#2563EB" opacity={0.85} mt="-4px" />
-                  </Stack>
-
-                  {/* Small figure left-back */}
-                  <Stack align="center" gap={0} position="absolute" bottom="30px" left="22%">
-                    <Box w="32px" h="32px" borderRadius="full" bg="#93c5fd" />
-                    <Box w="44px" h="54px" borderRadius="14px 14px 10px 10px" bg="#bfdbfe" mt="-3px" />
-                  </Stack>
-
-                  {/* Small figure right-back */}
-                  <Stack align="center" gap={0} position="absolute" bottom="30px" right="22%">
-                    <Box w="34px" h="34px" borderRadius="full" bg="#93c5fd" />
-                    <Box w="46px" h="56px" borderRadius="14px 14px 10px 10px" bg="#bfdbfe" mt="-3px" />
-                  </Stack>
-
-                  {/* Ground line */}
-                  <Box
-                    position="absolute"
-                    bottom={0}
-                    left="5%"
-                    right="5%"
-                    h="3px"
-                    bg="#dbeafe"
-                    borderRadius="full"
-                  />
-                </Box>
-
-                {/* Card label */}
-                <Box textAlign="center" px={8} mt={4}>
-                  <Text fontWeight="800" color="#0A1628" fontSize="xl" lineHeight="1.2" letterSpacing="-0.01em">
                     Community First
                   </Text>
-                  <Text color="gray.500" fontSize="sm" mt={1} fontWeight="400">
+                  <Text color="rgba(255,255,255,0.85)" fontSize="sm" fontWeight="400">
                     Building futures together
                   </Text>
                 </Box>
 
-                {/* Small badge inside card */}
+                {/* Layer 4 — UK Registered badge */}
                 <Box
                   position="absolute"
                   top="18px"
                   right="18px"
-                  bg="gray.50"
+                  zIndex={2}
+                  bg="rgba(255,255,255,0.95)"
                   borderRadius="xl"
                   px={3}
                   py={2}
                   border="1px solid"
                   borderColor="gray.200"
+                  backdropFilter="blur(8px)"
                 >
                   <Text fontSize="xs" fontWeight="700" color="#0A1628">
                     🌍 UK Registered
