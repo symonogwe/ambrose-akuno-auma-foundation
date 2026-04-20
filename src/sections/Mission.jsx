@@ -152,9 +152,6 @@ const Mission = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.65, ease: 'easeOut' }}
         >
-          {/* Vertical gold accent line */}
-          <Box w="4px" h="48px" bg="#F59E0B" borderRadius="full" mb={3} />
-
           {/* Label */}
           <Box mb={2} display="flex" alignItems="center" gap={3}>
             <Box w="3px" h="16px" bg="#F59E0B" borderRadius="full" flexShrink={0} />
