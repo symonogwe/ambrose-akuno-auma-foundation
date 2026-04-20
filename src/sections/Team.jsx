@@ -54,25 +54,22 @@ const TeamCard = ({ member }) => {
   const [flipped, setFlipped] = useState(false);
 
   const cardBg          = useColorModeValue('white', '#1e293b');
-  const cardBorderColor = useColorModeValue('#e2e8f0', '#334155');
   const nameColor       = useColorModeValue('#0A1628', '#F0F4FF');
 
   return (
     <Box
       bg={cardBg}
       borderRadius="16px"
-      border="1px solid"
-      borderColor={cardBorderColor}
-      boxShadow="0 2px 12px rgba(0,0,0,0.06)"
+      boxShadow="0 2px 16px rgba(0,0,0,0.08)"
       w="full"
       h="260px"
       overflow="hidden"
       cursor="pointer"
       style={{
         perspective: '1000px',
-        transition: 'box-shadow 0.2s ease, border-color 0.2s ease',
+        transition: 'box-shadow 0.2s ease',
       }}
-      _hover={{ boxShadow: '0 8px 30px rgba(0,0,0,0.12)', borderColor: '#2563EB' }}
+      _hover={{ boxShadow: '0 8px 30px rgba(0,0,0,0.12)' }}
       onMouseEnter={() => setFlipped(true)}
       onMouseLeave={() => setFlipped(false)}
       onClick={() => setFlipped((f) => !f)}
