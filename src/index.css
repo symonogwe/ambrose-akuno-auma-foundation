@@ -21,6 +21,12 @@ body {
 }
 .skip-link:focus { top: 0; }
 
+/* Typewriter cursor — calm 1.2s blink */
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
 /* Respect user's reduced-motion preference */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

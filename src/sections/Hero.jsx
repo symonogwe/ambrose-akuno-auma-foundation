@@ -127,7 +127,19 @@ const Hero = () => {
                 ]}
                 speed={50}
                 repeat={Infinity}
-                cursor={true}
+                cursor={false}
+              />
+              <Box
+                as="span"
+                display="inline-block"
+                w="3px"
+                h="0.85em"
+                bg="#2563EB"
+                ml="1px"
+                borderRadius="1px"
+                verticalAlign="text-bottom"
+                aria-hidden="true"
+                style={{ animation: 'cursorBlink 1.2s ease-in-out infinite' }}
               />
             </Heading>
           </MotionBox>
